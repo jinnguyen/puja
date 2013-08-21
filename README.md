@@ -51,6 +51,25 @@ The result will show:
 Hello <strong>Jin Nguyen</strong>,
 Welcome you go to the very first exmplate of Puja template.</pre>
 
+
+<strong>Template Inheritance</strong>:<br />
+- master.tpl:
+<pre>==== Start Master ===
+{% block body %}Master Body{% endblock body %}
+{% block javascript %}Master javascript{% endblock javascript %}
+==== End Master ====</pre>
+
+- index.tpl
+<pre>
+{% block javascript %}<strong>Index javascript</strong>{% endblock javascript %}
+{% block body %}<strong>Index Body</strong>{% endblock body %}</pre>
+
+And the result will be:
+
+<pre>==== Start Master ===
+<strong>Index Body</strong>
+<strong>Index javascript</strong>
+==== End Master ====</pre>
 <a href="#">more detail &gt;&gt; </a>
 
 
