@@ -76,7 +76,7 @@ And the result will be:
 
 
 
-
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3780dbe5ed7848e2f3d9c0f82be2607 "githalytics.com")](http://githalytics.com/jinnguyen/puja)
 
 
 
