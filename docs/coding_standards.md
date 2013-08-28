@@ -35,9 +35,9 @@ When writing Puja templates, we recommend you to follow these official coding st
 {% set foo_bar = 'foo' %}</pre>
 
 - Indent your code inside tags (use the same indentation as the one used for the main language of the file):
-<pre>{% block foo %}
+<pre>{% block body %}
    {% if true %}
        true
    {% endif %}
-{% endblock %}
+{% endblock body %}
 </pre>
