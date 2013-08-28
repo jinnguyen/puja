@@ -24,6 +24,12 @@ When writing Puja templates, we recommend you to follow these official coding st
 <pre>{{ foo|upper|lower }}
 {{ user.name }}</pre>
 
+- Do not put single quote (') and double quote (") before and after the file name in tag <strong>include</strong>, <strong>extends</strong>:
+<pre>
+   {% include include_file.tpl %}
+   {% extends master.tpl %}
+</pre>
+
 - Use lower cased and underscored variable names:
 <pre>{% set foo = 'foo' %}
 {% set foo_bar = 'foo' %}</pre>
