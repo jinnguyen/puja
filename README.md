@@ -70,7 +70,7 @@ And the result will be:
 <strong>Index Body</strong>
 <strong>Index javascript</strong>
 ==== End Master ====</pre>
-<a href="#">more detail &gt;&gt; </a>
+<a href="/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a>
 
 
 
