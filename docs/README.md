@@ -200,7 +200,7 @@ Include username: {{ username }}
 </pre>
 See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-tags.md">built-in tag</a> reference for the complete list.
 You can also create your own custom template tags; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
-
+<a name="template-inheritance"></a>
 <strong>VII. Template Inheritance</strong><br />
 The most powerful part of Puja is template inheritance. Template inheritance allows you to build a base "skeleton" template that contains all the common elements of your site and defines blocks that child templates can override.<br />
 
