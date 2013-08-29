@@ -125,7 +125,7 @@ You can also use filters and various operators in the if tag:
 {% endif %}</pre>
 While the above example works, be aware that most template filters return strings, so mathematical comparisons using filters will generally not work as you expect. length is an exception.
 
-<strong>V. Comments and Escaping</strong><br />
+<strong>V. Comments and Escaping</strong>
 - <strong>Comments</strong><br />
 To comment-out part of a line in a template, use the comment syntax: {# #}.<br />
 For example, this template would render as 'hello':
@@ -141,6 +141,8 @@ The easiest way is to output the variable delimiter ({{) by using a variable exp
 <pre>
 \\{{ variable \\}}
 </pre>
+
+
 <strong>VI. Including other Templates</strong><br />
 <strong>1. include</strong>:
 The tag is useful to include a template and return the rendered content of that template into the current one.<br />
