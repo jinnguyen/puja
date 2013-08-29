@@ -1,2 +1,2 @@
-Built-in template tags
+Built-in template filters
 ===
