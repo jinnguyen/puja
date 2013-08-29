@@ -125,17 +125,22 @@ You can also use filters and various operators in the if tag:
 {% endif %}</pre>
 While the above example works, be aware that most template filters return strings, so mathematical comparisons using filters will generally not work as you expect. length is an exception.
 
-<strong>V. Comments</strong><br />
+<strong>V. Comments and Escaping</strong><br />
+- <strong>Comments</strong><br />
 To comment-out part of a line in a template, use the comment syntax: {# #}.<br />
-
 For example, this template would render as 'hello':
 <pre>{# greeting #}hello</pre>
 A comment can contain any template code, invalid or not. For example:
-
 <pre>{# 
 {% if foo %}bar{% else %} 
 #}</pre>
-
+- <strong>Escaping</strong><br />
+It is sometimes desirable or even necessary to have Twig ignore parts it would otherwise handle as variables or blocks. <br />
+For example if the default syntax is used and you want to use {{ as raw string in the template and not start a variable you have to use a trick.
+The easiest way is to output the variable delimiter ({{) by using a variable expression:
+<pre>
+\\{{ variable \\}}
+</pre>
 <strong>VI. Including other Templates</strong><br />
 <strong>1. include</strong>:
 The tag is useful to include a template and return the rendered content of that template into the current one.<br />
@@ -150,7 +155,7 @@ Example:
 <pre>$username = 'Jin';</pre>
 and sitebar.tpl's content:
 <pre>
-    Include username: {{ username }}
+Include username: {{ username }}
 </pre>
 Get variable from parent template:
 <pre>
