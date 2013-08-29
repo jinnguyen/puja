@@ -93,7 +93,7 @@ See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-fil
 Or you can also create your own custom template filters; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
 
 <br />
-<strong>IV. Tags</strong>
+<strong>IV. Tags</strong><br />
 Tags look like this: {% tag %}. Tags are more complex than variables: Some create text in the output, some control flow by performing loops or logic, and some load external information into the template to be used by later variables.
 
 Some tags require beginning and ending tags (i.e. {% tag %} ... tag contents ... {% endtag %}).<br />
