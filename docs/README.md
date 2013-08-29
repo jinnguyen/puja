@@ -51,7 +51,31 @@ You can assign values to variables inside code blocks. Assignments use the :
 {% set foo = 'foo' %}
 {% set foo = 5 %}</pre>
 
-<strong>II. Filters</strong><br />
+<strong>II. Oparators </strong><br />
+- <strong>Math</strong><br />
+Puja allows you to calculate with values. This is rarely useful in templates but exists for completeness' sake. The following operators are supported:
+<pre>
+<strong>+</strong>: Adds two objects together (the operands are casted to numbers). {{ 1 + 1 }} is 2.
+<strong>-</strong>: Subtracts the second number from the first one. {{ 3 - 2 }} is 1.
+<strong>/</strong>: Divides two numbers. The returned value will be a floating point number. {{ 1 / 2 }} is {{ 0.5 }}.
+<strong>%</strong>: Calculates the remainder of an integer division. {{ 11 % 7 }} is 4.
+<strong>*</strong>: Multiplies the left operand with the right one. {{ 2 * 2 }} would return 4.
+</pre>
+- <strong>Logic</strong><br />
+You can combine multiple expressions with the following operators:
+<pre>
+$a <strong>and</strong> $b: Returns true if $a and $b are both true.
+$a <strong>&&</strong> $b: Returns true if $a and $b are both true.
+$a <strong>or</strong> $b: Returns true if $a or $b is true.
+$a <strong>||</strong> $b: Returns true if $a or $b is true.
+<strong>not</strong> $a: Returns true if $a is false
+<strong>!</strong>$a: Returns true if $a is false
+$a <strong>in</strong> $array: Returns true if $a in array $array
+</pre>
+- <strong>Comparisons</strong><br />
+The following comparison operators are supported in any expression: ==, ===, !=, !==, &lt;, &gt;, &gt;=, and &lt;=
+
+<strong>III. Filters</strong><br />
 You can modify variables for display by using filters.<br />
 Example:
 <pre>
@@ -69,7 +93,7 @@ See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/filters.md">
 Or you can also create your own custom template filters; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
 
 <br />
-<strong>III. Tags</strong><br />
+<strong>IV. Tags</strong><br />
 Tags look like this: {% tag %}. Tags are more complex than variables: Some create text in the output, some control flow by performing loops or logic, and some load external information into the template to be used by later variables.
 
 Some tags require beginning and ending tags (i.e. {% tag %} ... tag contents ... {% endtag %}).<br />
@@ -101,7 +125,7 @@ You can also use filters and various operators in the if tag:
 {% endif %}</pre>
 While the above example works, be aware that most template filters return strings, so mathematical comparisons using filters will generally not work as you expect. length is an exception.
 
-<strong>IV. Comments</strong><br />
+<strong>V. Comments</strong><br />
 To comment-out part of a line in a template, use the comment syntax: {# #}.<br />
 
 For example, this template would render as 'hello':
@@ -112,8 +136,8 @@ A comment can contain any template code, invalid or not. For example:
 {% if foo %}bar{% else %} 
 #}</pre>
 
-<strong>V. Including other Templates</strong><br />
-1. <strong>include</strong>:
+<strong>VI. Including other Templates</strong><br />
+<strong>1. include</strong>:
 The tag is useful to include a template and return the rendered content of that template into the current one.<br />
 
 Example:
@@ -154,7 +178,7 @@ Include username: Abc
 Here is username in index.tpl: Jin after include.
 </pre>
 
-<strong>get_file</strong><br />
+<strong>2. get_file</strong><br />
 Same with include, but return the NO RENDER content.<br />
 Example:
 <pre>
@@ -167,7 +191,74 @@ The resule will be:
 Welcome Jin,
 Include username: {{ username }}
 </pre>
-
-
 See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/tags.md">built-in tag</a> reference for the complete list.
 You can also create your own custom template tags; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
+
+<strong>VII. Template Inheritance</strong><br />
+The most powerful part of Puja is template inheritance. Template inheritance allows you to build a base "skeleton" template that contains all the common elements of your site and defines blocks that child templates can override.<br />
+
+
+Let's define a base template, master.tpl, which defines a simple HTML skeleton document that you might use for a simple two-column page:
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      	&lt;title&gt;{% block title %}{% endblock title %} - My Webpage&lt;/title&gt;
+      	&lt;link rel="stylesheet" href="style.css" /&gt;
+        {% block css %}{% endblock css %}
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="content"&gt;
+        	{% block content %}{% endblock content %}
+      	&lt;/div&gt;
+        &lt;script src="/path/to/jquery.js"&gt;&lt;script&gt;
+        {% block javascript %}{% endblock javascript %}
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+In this example, the tags define four blocks that child templates can fill in. All the block tag does is to tell the template engine that a child template may override those portions of the template.<br />
+A child template might look like this:
+<pre>{% extends master.tpl %}
+{% block title %}Index{% endblock title css %}
+{% block css %}
+    &lt;style type="text/css"&gt;
+        .important { color: #336699; }
+    &lt;/style&gt;
+{% endblock css %}
+{% block javascript %}
+	&lt;script&gt;
+		$(document).ready(function(){
+			console.log('All are already');
+		})
+	&lt;/script&gt;
+{% endblock javascript %}
+{% block content %}
+    &lt;h1&gt;Index&lt;/h1&gt;
+    &lt;p class="important"&gt;
+        Welcome to my awesome homepage.
+    &lt;/p&gt;
+{% endblock content %}</pre>
+And here is result:
+<pre>&lt;html&gt;
+    &lt;head&gt;
+      	&lt;title&gt;Index - My Webpage&lt;/title&gt;
+      	&lt;link rel="stylesheet" href="style.css" /&gt;
+         &lt;style type="text/css"&gt;
+        	.important { color: #336699; }
+    	&lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="content"&gt;
+        	&lt;h1&gt;Index&lt;/h1&gt;
+		    &lt;p class="important"&gt;
+		        Welcome to my awesome homepage.
+		    &lt;/p&gt;
+      	&lt;/div&gt;
+        &lt;script src="/path/to/jquery.js"&gt;&lt;script&gt;
+       	&lt;script&gt;
+       	$(document).ready(function(){
+			console.log('All are already');
+		})
+		&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+** We recommend that you should use inherit template to user master base instead include header.tpl, footer.tpl
