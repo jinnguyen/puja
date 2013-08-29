@@ -93,7 +93,7 @@ See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-fil
 Or you can also create your own custom template filters; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
 
 <br />
-<strong>IV. Tags</strong><br />
+<strong>IV. Tags</strong>
 Tags look like this: {% tag %}. Tags are more complex than variables: Some create text in the output, some control flow by performing loops or logic, and some load external information into the template to be used by later variables.
 
 Some tags require beginning and ending tags (i.e. {% tag %} ... tag contents ... {% endtag %}).<br />
@@ -108,7 +108,6 @@ Loop over each item in an array. For example, to display a list of athletes prov
 	&lt;/ul&gt;
 </pre>
 
-	
 - <strong>if</strong> and <strong>else</strong><br />
 Evaluates a variable, and if that variable is “true” the contents of the block are displayed:
 <pre>{% if news_list %}
@@ -124,6 +123,9 @@ You can also use filters and various operators in the if tag:
    One: {{ news_list.0.name }}
 {% endif %}</pre>
 While the above example works, be aware that most template filters return strings, so mathematical comparisons using filters will generally not work as you expect. length is an exception.
+
+- <strong>block</strong> and <strong>extends</strong><br />
+Set up template inheritance (<a href="#template-inheritance">see below</a>), a powerful way of cutting down on “boilerplate” in templates.
 
 <strong>V. Comments and Escaping</strong>
 - <strong>Comments</strong><br />
@@ -200,6 +202,7 @@ Include username: {{ username }}
 </pre>
 See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-tags.md">built-in tag</a> reference for the complete list.
 You can also create your own custom template tags; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
+
 <a name="template-inheritance"></a>
 <strong>VII. Template Inheritance</strong><br />
 The most powerful part of Puja is template inheritance. Template inheritance allows you to build a base "skeleton" template that contains all the common elements of your site and defines blocks that child templates can override.<br />
