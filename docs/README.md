@@ -227,7 +227,7 @@ Let's define a base template, master.tpl, which defines a simple HTML skeleton d
 &lt;/html&gt;</pre>
 In this example, the tags define four blocks that child templates can fill in. All the block tag does is to tell the template engine that a child template may override those portions of the template.<br />
 A child template might look like this:
-<pre>{% extends master.tpl %}
+<pre><strong>{% extends master.tpl %}</strong>
 {% block title %}Index{% endblock title css %}
 {% block css %}
     &lt;style type="text/css"&gt;
