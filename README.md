@@ -39,6 +39,7 @@ Welcome you go to the very first exmplate of Puja template.</pre>
   &lt;?php
   require_once '/path/to/puja.php';
   $tpl = new Puja;
+  $tpl->tpl_dir = '/path/to/template/folder/';
   $data = array(
   	'username'=>'Jin Nguyen',
   );
@@ -51,6 +52,7 @@ The result will show:
 Hello <strong>Jin Nguyen</strong>,
 Welcome you go to the very first exmplate of Puja template.</pre>
 
+See <a href="https://github.com/jinnguyen/puja/tree/master/docs/user-guide.md">User's guide</a> for full information.<br />
 
 <strong>Template Inheritance</strong>:<br />
 - master.tpl:
@@ -70,7 +72,7 @@ And the result will be:
 <strong>Index Body</strong>
 <strong>Index javascript</strong>
 ==== End Master ====</pre>
-<a href="https://github.com/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a>
+<a href="https://github.com/jinnguyen/puja/tree/master/docs#template-inheritance">more detail &gt;&gt; </a>
 
 
 
