@@ -15,6 +15,11 @@ User's guide
     var $compile_dir;
     
     /**
+      
+    */
+    var $debug = true;
+    
+    /**
       Type of template compile. Allow below values:
       - include: template engine build file php from AST and include it again to run. This is default.
         This type will require set $compile_dir to build php file.
