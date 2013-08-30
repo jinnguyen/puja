@@ -72,7 +72,7 @@ And the result will be:
 <strong>Index Body</strong>
 <strong>Index javascript</strong>
 ==== End Master ====</pre>
-<a href="https://github.com/jinnguyen/puja/tree/master/docs#template-inheritance">more detail &gt;&gt; </a>
+<a href="https://github.com/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a>
 
 
 
