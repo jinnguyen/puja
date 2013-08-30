@@ -272,4 +272,6 @@ And here is result:
     &lt;/body&gt;
 &lt;/html&gt;</pre>
 
-** We recommend that you should use inherit template to user master base instead include header.tpl, footer.tpl
+** We recommend that you should use inherit template to user master base instead include header.tpl, footer.tpl<br />
+<strong>VIII. Coding standards</strong><br />
+See <a href="https://github.com/jinnguyen/puja/blob/master/docs/coding-standards.md">Coding standards</a> for more detail.
