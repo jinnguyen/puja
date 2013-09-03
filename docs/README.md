@@ -149,6 +149,7 @@ The easiest way is to output the variable delimiter ({{) by using a variable exp
 
 
 <strong>VI. Including other Templates</strong><br />
+<a name="include"></a>
 <strong>1. include</strong>:
 The tag is useful to include a template and return the rendered content of that template into the current one.<br />
 
@@ -189,7 +190,7 @@ Here is username in index.tpl: Jin,
 Include username: Abc
 Here is username in index.tpl: Jin after include.
 </pre>
-
+<a name="get_file"></a>
 <strong>2. get_file</strong><br />
 Same with include, but return the NO RENDER content.<br />
 Example:
