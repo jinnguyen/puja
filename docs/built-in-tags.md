@@ -71,9 +71,9 @@ After the set call, the foo variable is available in the template like any other
 
 <a name="include"></a>
 - <strong>include</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#inlcude">Includes</a> for more information.<br />
+See <a href="https://github.com/jinnguyen/puja/edit/master/docs#inlcude">Including other Templates</a> for more information.<br />
 
 <a name="get_file"></a>
 - <strong>get_file</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#get_file">Includes</a> for more information.<br />
+See <a href="https://github.com/jinnguyen/puja/edit/master/docs#get_file">Including other Templates</a> for more information.<br />
 
