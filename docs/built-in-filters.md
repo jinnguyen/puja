@@ -1,2 +1,21 @@
 Built-in template filters
 ===
+capfirst
+cut
+date
+default
+escape
+escapejs
+length
+nl2br
+lower
+upper
+pluralize
+striptags
+truncatechars
+truncatewords
+urlencode
+urldecode
+urlize
+urlizetrunc
+yesno
