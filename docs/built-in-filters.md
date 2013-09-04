@@ -5,7 +5,6 @@ Built-in template filters
     <td width="400">
       <a href="#abs">abs</a><br />
       <a href="#capfirst">capfirst</a><br />
-      <a href="#cut">cut</a><br />
       <a href="#date">date</a><br />
       <a href="#default">default</a><br />
       <a href="#escape">escape</a><br />
@@ -16,9 +15,9 @@ Built-in template filters
       <a href="#length">length</a><br />
       <a href="#lower">lower</a><br />
       <a href="#merge">merge</a><br />
+      <a href="#nl2br">nl2br</a><br />
   </td>
     <td width="400">
-      <a href="#nl2br">nl2br</a><br />
       <a href="#pluralize">pluralize</a><br />
       <a href="#replace">replace</a><br />
       <a href="#striptags">striptags</a><br />
@@ -37,19 +36,91 @@ Built-in template filters
 </table>
 
 - <strong><a name="abs">abs</a></strong><br />
+The abs filter returns the absolute value.<br />
+For example:
+<pre>{{ age|abs }}</pre>
+If <strong>age</strong> is -5, the output will be 5.
+
 - <strong><a name="capfirst">capfirst</a></strong><br />
-- <strong><a name="cut">cut</a></strong><br />
+Capitalizes the first character of the value.<br />
+For example:
+<pre>{{ name|capfirst }}</pre>
+If <strong>name</strong> is "puja", the output will be "Puja".
+
 - <strong><a name="date">date</a></strong><br />
+Formats a date according to the given format.<br />
+Uses a similar format as PHP’s date() function (http://php.net/date) with some differences.
+For example:
+<pre>{{ today|date:"d/m/Y h:i:s" }}</pre>
+If <strong>today</strong> is 2013-09-04 20:10:5, the output will be 04/09/2013 20:10:5.
+
 - <strong><a name="default">default</a></strong><br />
+If value evaluates to False, uses the given default. Otherwise, uses the value.<br />
+For example:
+<pre>{{ your_skill|default:"nothing" }}</pre>
+If <strong>your_skill</strong> is "" (the empty string) or null, the output will be <strong>nothing</strong>.
+
 - <strong><a name="escape">escape</a></strong><br />
+Escapes a string’s HTML. Specifically, it makes these replacements:
+<pre>
+&lt; is converted to &amp;lt;
+&gt; is converted to &amp;gt;
+&#39; (single quote) is converted to &amp;#39;
+&quot; (double quote) is converted to &amp;quot;
+&amp; is converted to &amp;amp;
+</pre>
+
 - <strong><a name="escapejs">escapejs</a></strong><br />
+Escapes characters for use in JavaScript strings. This does not make the string safe for use in HTML, but does protect you from syntax errors when using templates to generate JavaScript/JSON.<br />
+For example:
+<pre>{{ value|escapejs }}</pre>
+If value is 
+<pre>testing
+javascript </pre>The output will be 
+<pre>testing\
+javascript"</pre>
+
 - <strong><a name="format">format</a></strong><br />
+The format filter formats a given string by replacing a placeholder (placeholder follows the sprintf(http://php.net/sprintf) notation):
+<pre>{{ "I like a %s"|format:"girl" }}</pre>
+The output will be: I like a girl.
+
 - <strong><a name="join">join</a></strong><br />
+Joins a array with a string, like PHP’s implode(str,array)<br />
+For example:
+<pre>{{ array|join:" // " }}</pre>
+If <strong>array</strong> is the array ['a', 'b', 'c'], the output will be the string "a // b // c".
+
 - <strong><a name="keys">keys</a></strong><br />
+The keys filter returns the keys of an array. It is useful when you want to iterate over the keys of an array:
+<pre>
+{% for key in array|keys %}
+    ...
+{% endfor %}</pre>
+
 - <strong><a name="length">length</a></strong><br />
+Returns the length of the value. This works for both strings and lists.
+For example:
+<pre>{{ array|length }}</pre>
+If <strong>array</strong> is ['a', 'b', 'c', 'd'], the output will be 4.
+
 - <strong><a name="lower">lower</a></strong><br />
-- <strong><a name="merge">merge</a></strong><br />
+Converts a string into all lowercase.<br />
+For example:
+<pre>{{ message|lower }}</pre>
+If <strong>message</strong>is "WElcome", the output will be "welcome".
+
 - <strong><a name="nl2br">nl2br</a></strong><br />
+The nl2br filter inserts HTML line breaks before all newlines in a string:
+For example:
+<pre>{{ content|nl2br }}</pre>
+if <strong>content</strong> is:
+<pre>Dear,
+This is message from ...</pre>
+The output will be:
+<pre>Dear,&lt;br /&gt;
+This is message from ...</pre>
+
 - <strong><a name="pluralize">pluralize</a></strong><br />
 - <strong><a name="replace">replace</a></strong><br />
 - <strong><a name="striptags">striptags</a></strong><br />
@@ -61,7 +132,6 @@ Built-in template filters
 - <strong><a name="urldecode">urldecode</a></strong><br />
 - <strong><a name="urlize">urlize</a></strong><br />
 - <strong><a name="urlizetrunc">urlizetrunc</a></strong><br />
-- <strong><a name="values">values</a></strong><br />
 - <strong><a name="yesno">yesno</a></strong><br />
 
 
