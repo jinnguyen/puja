@@ -64,11 +64,6 @@ User's guide
 	 * false: only include 1 level. This option will make faster.
 	 * */
 	<strong>var $include_multi_level = true;</strong>
-	/**
-	 * Consider include multi extends.
-	 * true: Default value. Allow extends multi level..
-	 * false: only include 1 level. This option will make faster.
-	 * */
     
     /**
     Parse $data  to $tpl_file and display.
