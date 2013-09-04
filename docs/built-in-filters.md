@@ -14,7 +14,6 @@ Built-in template filters
       <a href="#keys">keys</a><br />
       <a href="#length">length</a><br />
       <a href="#lower">lower</a><br />
-      <a href="#merge">merge</a><br />
       <a href="#nl2br">nl2br</a><br />
   </td>
     <td width="400">
@@ -29,7 +28,6 @@ Built-in template filters
       <a href="#urldecode">urldecode</a><br />
       <a href="#urlize">urlize</a><br />
       <a href="#urlizetrunc">urlizetrunc</a><br />
-      <a href="#values">values</a><br />
       <a href="#yesno">yesno</a><br />
     </td>
   </tr>
