@@ -61,7 +61,7 @@ Built-in template filters
 - <strong><a name="#urldecode">urldecode</a></strong><br />
 - <strong><a name="#urlize">urlize</a></strong><br />
 - <strong><a name="#urlizetrunc">urlizetrunc</a></strong><br />
-- <strong><a name="#values">values</a></strong><br />
+- <strong><a name="values">values</a></strong><br />
 <a name="#yesno"></a>
 - <strong>yesno</strong><br />
 
