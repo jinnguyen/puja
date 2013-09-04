@@ -120,6 +120,17 @@ The output will be:
 This is message from ...</pre>
 
 - <strong><a name="pluralize">pluralize</a></strong><br />
+Returns a plural suffix if the value is not 1. By default, this suffix is 's'.
+For example:
+<pre>You have {{ num_messages }} message{{ num_messages|pluralize }}.</pre>
+If <strong>num_messages</strong> is 1, the output will be You have 1 message. If <strong>num_messages</strong> is 2 the output will be You have 2 messages.<br /><br />
+For words that require a suffix other than 's', you can provide an alternate suffix as a parameter to the filter.<br />
+For example:
+<pre>You have {{ num_walruses }} walrus{{ num_walruses|pluralize:"es" }}.</pre>
+For words that don’t pluralize by simple suffix, you can specify both a singular and plural suffix, separated by a comma.<br />
+For example:
+<pre>You have {{ num_cherries }} cherr{{ num_cherries|pluralize:"y,ies" }}.</pre>
+
 - <strong><a name="replace">replace</a></strong><br />
 - <strong><a name="striptags">striptags</a></strong><br />
 - <strong><a name="trim">trim</a></strong><br />
