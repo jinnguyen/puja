@@ -30,8 +30,7 @@ Variables look like this: {{ variable }}. When the template engine encounters a 
 Example: {{ section.title }}
 <br />
 
-In the above example, {{ section.title }} will be replaced with the <strong>title</strong> attribute of the <strong>section</strong> object:
-<pre></pre>
+In the above example, {{ section.title }} will be replaced with the <strong>title</strong> attribute of the <strong>section</strong> object.<br />
 If you use a variable that doesn’t exist, the template system will insert the value <strong>NULL</strong>.
 <pre>
 <strong><i>Behind the scenes</i></strong><br />
