@@ -9,7 +9,6 @@ Built-in template filters
       <a href="#default">default</a><br />
       <a href="#escape">escape</a><br />
       <a href="#escapejs">escapejs</a><br />
-      <a href="#format">format</a><br />
       <a href="#join">join</a><br />
       <a href="#keys">keys</a><br />
       <a href="#length">length</a><br />
@@ -18,7 +17,6 @@ Built-in template filters
   </td>
     <td width="400">
       <a href="#pluralize">pluralize</a><br />
-      <a href="#replace">replace</a><br />
       <a href="#striptags">striptags</a><br />
       <a href="#trim">trim</a><br />
       <a href="#truncatechars">truncatechars</a><br />
@@ -26,8 +24,8 @@ Built-in template filters
       <a href="#upper">upper</a><br />
       <a href="#urlencode">urlencode</a><br />
       <a href="#urldecode">urldecode</a><br />
-      <a href="#urlize">urlize</a><br />
-      <a href="#urlizetrunc">urlizetrunc</a><br />
+      <a href="#urltrunc">urltrunc</a><br />
+      <a href="#wordwrap">wordwrap</a><br />
       <a href="#yesno">yesno</a><br />
     </td>
   </tr>
@@ -78,11 +76,6 @@ javascript </pre>The output will be
 <pre>testing\
 javascript"</pre>
 
-- <strong><a name="format">format</a></strong><br />
-The format filter formats a given string by replacing a placeholder (placeholder follows the sprintf(http://php.net/sprintf) notation):
-<pre>{{ "I like a %s"|format:"girl" }}</pre>
-The output will be: I like a girl.
-
 - <strong><a name="join">join</a></strong><br />
 Joins a array with a string, like PHP’s implode(str,array)<br />
 For example:
@@ -131,17 +124,98 @@ For words that don’t pluralize by simple suffix, you can specify both a singul
 For example:
 <pre>You have {{ num_cherries }} cherr{{ num_cherries|pluralize:"y,ies" }}.</pre>
 
-- <strong><a name="replace">replace</a></strong><br />
 - <strong><a name="striptags">striptags</a></strong><br />
+Strips all [X]HTML tags. Except allowable tags.<br />
+For example:
+<pre>{{ content|striptags:"span,b" }}</pre>
+If <strong>content</strong> is "&lt;div&gt;&lt;b&gt;Joel&lt;/b&gt; &lt;button&gt;is&lt;/button&gt; a &lt;span&gt;slug&lt;/span&gt;&lt;/div&gt;", the output will be "&lt;b&gt;Joel&lt;/b&gt;is a &lt;span&gt;slug&lt;/span&gt;".
+
 - <strong><a name="trim">trim</a></strong><br />
+The trim filter strips whitespace (or other characters) from the beginning and end of a string.<br />
+For example:
+<pre>{{ '  I like Puja.  '|trim }}</pre>
+The  output will be 'I like Puja.' 
+<pre>{{ '  I like Puja.'|trim('.') }}</pre>
+The output will be '  I like Puja'
+
 - <strong><a name="truncatechars">truncatechars</a></strong><br />
+Truncates a string if it is longer than the specified number of characters. Truncated strings will end with a translatable ellipsis sequence ("...").<br />
+For example:
+<pre>{{ name|truncatechars:9 }}</pre>
+If <strong>name</strong> is "Joel is a slug", the output will be "Joel i...".
+
 - <strong><a name="truncatewords">truncatewords</a></strong><br />
+Truncates a string after a certain number of words.<br />
+For example:
+<pre>{{ name|truncatewords:2 }}</pre>
+If <strong>name</strong> is "Joel is a slug", the output will be "Joel is ...".<br />
+** Newlines within the string will be removed.
+
 - <strong><a name="upper">upper</a></strong><br />
+Converts a string into all uppercase.<br />
+For example:
+<pre>{{ name|upper }}</pre>
+If <strong>name</strong> is "Joel is a slug", the output will be "JOEL IS A SLUG".
+
 - <strong><a name="urlencode">urlencode</a></strong><br />
+The url_encode filter percent encodes a given string as URL segment or an array as query string.<br />
+For example:
+<pre>{{ name|urlencode }}</pre>
+If <strong>name</strong> is "string with spaces", the  output would be "string%20with%20spaces"
+
 - <strong><a name="urldecode">urldecode</a></strong><br />
-- <strong><a name="urlize">urlize</a></strong><br />
-- <strong><a name="urlizetrunc">urlizetrunc</a></strong><br />
+Decodes URL-encoded string<br />
+For example:
+<pre>{{ name|urldecode }}</pre>
+If <strong>name</strong> is "string%20with%20spaces", the  output would be "string with spaces"
+
+- <strong><a name="urltrunc">urltrunc</a></strong><br />
+Truncates a URL if it is longer than the specified number of characters. Truncated url will include with a translatable ellipsis sequence ("...").<br />
+For example:
+<pre>{{ url|urltrunc:15 }}</pre>
+If <strong>url</strong> is "www.github.com/jinnguyen/puja", the output would be 'www.github..../puja'.
+
+- <strong><a name="wordwrap">wordwrap</a></strong><br />
+Wraps words at specified line length.<br />
+For example:
+<pre>{{ value|wordwrap:5 }}</pre>
+If value is Joel is a slug, the output would be:
+<pre>Joel
+is a
+slug</pre>
 - <strong><a name="yesno">yesno</a></strong><br />
+Maps values for true, false and (optionally) None, to the strings “yes”, “no”, “maybe”, or a custom mapping passed as a comma-separated list, and returns one of those strings according to the value:<br />
+For example:
+<pre>{{ value|yesno:"success,fail" }}</pre>
+<table width="100%" >
+  <tr>
+    <td width="50">Value</td>
+    <td width="200">Argument</td>
+    <td width="200">Outputs</td>
+  </tr>
+  <tr>
+    <td>true</td>
+    <td></td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td></td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td>true</td>
+    <td>success,fail</td>
+    <td>success</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td>success,fail</td>
+    <td>fail</td>
+  </tr>
+</table>
+
+
 
 
 
