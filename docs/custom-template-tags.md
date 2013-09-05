@@ -4,7 +4,7 @@ Puja’s template system comes with a wide variety of <a href="https://github.co
 Hoever, sometime you may find yourself needing functionality that is not covered by the core set of template primitives. You can extend the template engine by defining custom tags and filters using PHP, and then make them available to your template.
 
 - <strong>I. Writing custom template filters</strong><br />
-Custom filters are just method of PHP class.<br /><br />
+Custom filters are just method of PHP class.<br />
 For example, you need a new filter <strong>cutend</strong> to cut a number end characters of the string.<br />
 Here’s an example filter definition in PHP:<br />
 <strong>customer_filters.php</strong>
