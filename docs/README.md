@@ -79,7 +79,7 @@ You can modify variables for display by using filters.<br />
 Example:
 <pre>
     {{ address|lower }}
-    {{ address|lower|cutnword:4 }}
+    {{ address|lower|truncatechars:4 }}
     {{ today|date:"d/m/Y" }}
 </pre>
 If address value is <strong>HERE IS THE PUJA FILTER SAMPLES</strong> and today value is <strong>2013-08-29 08:20:05</strong> The result of above example will be:
