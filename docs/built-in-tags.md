@@ -48,7 +48,7 @@ The above is equivalent to â€“ but shorter, cleaner, and possibly faster than â€
 
 <a name="extends"></a>
 - <strong>extends</strong>:<br />
-If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
+If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for basic usage.<br />
 ** Puja don't support you use multi extends tag in a template.
 <pre>{% extends master1.tpl %}
 {% extends master2.tpl %}
@@ -80,7 +80,13 @@ Master2 body
 </pre>
 <a name="block-endblock"></a>
 - <strong>block..endblock</strong>:<br />
-If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
+If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for basic usage.<br />
+There are two ways to define a block:
+<pre>
+      1/. {% block block_name %}...{% endblock blockname %}
+      2/. {% block block_name %}...{% endblock %}
+</pre>
+If a block has been extended by a child template, this block content will be the content of the block in child template.
 
 <a name="set"></a>
 - <strong>set</strong>:<br />
