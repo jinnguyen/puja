@@ -99,9 +99,28 @@ After the set call, the foo variable is available in the template like any other
 
 <a name="include"></a>
 - <strong>include</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#include">Including other Templates</a> for more information.<br />
+If this is the first time you come with Puja, you shoule see <a href="https://github.com/jinnguyen/puja/edit/master/docs#include">Including other Templates</a> for basic usage.<br />
+** You can include file in a included file ( include multi level)
+<pre>
+<strong>index.tpl</strong>
+....
+{% include sub.tpl %}
+....<br />
+<strong>sub.tpl</strong>
+== sub content ==<br />
+{% include sub1.tpl %}
+<strong>sub1.tpl</strong>
+== sub1 content ==
+</pre>
+The reuslt will be:
+<pre>
+....
+== sub content ==
+== sub1 content ==
+....
+</pre>
 
 <a name="get_file"></a>
 - <strong>get_file</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#get_file">Including other Templates</a> for more information.<br />
+If this is the first time you come with Puja, you shoule see <a href="https://github.com/jinnguyen/puja/edit/master/docs#get_file">Including other Templates</a> for more information.<br />
 
