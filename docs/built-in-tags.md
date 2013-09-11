@@ -48,11 +48,39 @@ The above is equivalent to â€“ but shorter, cleaner, and possibly faster than â€
 
 <a name="extends"></a>
 - <strong>extends</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
+If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
+** Puja don't support you use multi extends tag in a template.
+<pre>{% extends master1.tpl %}
+{% extends master2.tpl %}
+....</pre>
+But you can extends multi level, that mean:<br />
+<pre><strong>master1.tpl</strong>
+{% block body %}
+Master1 body
+{% endblock %}<br /><br />
+<strong>master2.tpl</strong>
+{% extends master1.tpl %}
+{% block body %}
+Master2 body
+      {% block sub_body %}
+            master2 sub body
+      {% endblock %}
+{% endblock %}<br /><br />
+<strong>index.tpl</strong>
+{% extends master2.tpl %}
+{% block sub_body %}
+Index sub body
+{% endblock %}
+</pre>
+And the result will be:
+<pre>
+Master2 body
+      Index sub body
 
+</pre>
 <a name="block-endblock"></a>
 - <strong>block..endblock</strong>:<br />
-See <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
+If this is the first time you come with Puja, you should see <a href="https://github.com/jinnguyen/puja/edit/master/docs#template-inheritance">Template inheritance</a> for more information.<br />
 
 <a name="set"></a>
 - <strong>set</strong>:<br />
