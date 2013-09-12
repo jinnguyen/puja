@@ -88,6 +88,11 @@ If address value is <strong>HERE IS THE PUJA FILTER SAMPLES</strong> and today v
     here is the puja ...
     29/08/2013
 </pre>
+** The precedence of an filter is "<strong>Left to right</strong>". That mean, if <strong>content</strong> is "&lt;br /&gt;This is a text"<br />
+The result will be:
+<pre>{{ content|striptags|truncatechars:7 }} => "This is"
+{{ content|truncatechars:7|striptags }} => "T"
+</pre>
 See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-filters.md">built-in filter</a> reference for the complete list.<br />
 Or you can also create your own custom template filters; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
 
