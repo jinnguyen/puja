@@ -129,4 +129,4 @@ The reuslt will be:
 <a name="get_file"></a>
 - <strong>get_file</strong>:<br />
 If this is the first time you come with Puja, you shoule see <a href="https://github.com/jinnguyen/puja/edit/master/docs#get_file">Including other Templates</a> for more information.<br />
-
+Because get_file is only load file, don't compile the file content, so it cannot use get_file in multi level.
