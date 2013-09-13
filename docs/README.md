@@ -129,7 +129,7 @@ You can also use filters and various operators in the if tag:
 While the above example works, be aware that most template filters return strings, so mathematical comparisons using filters will generally not work as you expect. length is an exception.
 
 - <strong>block</strong> and <strong>extends</strong><br />
-Set up template inheritance (<a href="#template-inheritance">see below</a>), a powerful way of cutting down on “boilerplate” in templates.<br />
+See <a href="#template-inheritance">Template inheritance</a> for more information.<br />
 
 See the <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-tags.md">built-in tag</a> reference for the complete list.<br />
 You can also create your own custom template tags; see <a href="https://github.com/jinnguyen/puja/blob/master/docs/custom-template-tags.md">Custom template tags and filters</a>.
