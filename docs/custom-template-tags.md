@@ -28,7 +28,8 @@ And here’s an example of how that filter would be used:
 <pre>{{ name|cutend:4 }} // have argument
   {{ name|cutend }} // no argument
 </pre>
-If <strong>name</strong> is "I like puja", the output will be "puja" and "I like puja".
+If <strong>name</strong> is "I like puja", the output will be "puja" and "I like puja".<br />
+** You can overwrite all built-in filter (even filter <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-filters.md#main">main</a>) by set the customer filter name same with built-in filter name.
 
 - <strong>II. Writing custom template tags</strong><br />
 
