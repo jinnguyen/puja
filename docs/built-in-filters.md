@@ -3,6 +3,7 @@ Built-in template filters
 <table width="100%" >
   <tr>
     <td width="400">
+      <a href="#main"><strong>&bull; main</strong></a><br />
       <a href="#abs">abs</a><br />
       <a href="#capfirst">capfirst</a><br />
       <a href="#date">date</a><br />
@@ -30,6 +31,11 @@ Built-in template filters
     </td>
   </tr>
 </table>
+
+- <strong><a name="main">main</a></strong><br />
+Return the "add slashes" string. This is default filter. It always runs when Puja compile.
+<pre>{{ name }}</pre>
+If <strong>name</strong> is "I'm a study", the result will be "I\'m a study"
 
 - <strong><a name="abs">abs</a></strong><br />
 The abs filter returns the absolute value.<br />
