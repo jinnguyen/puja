@@ -56,6 +56,7 @@ $data = array('skin'=>'skin_default');
 </pre>
 It sames with
 <pre>{% extends skin_default/master.tpl %}</pre>
+** Note: this variable is only support simple variable ($username,$skin,...). <br />
 <strong>II. Oparators </strong><br />
 - <strong>Math</strong><br />
 Puja allows you to calculate with values. This is rarely useful in templates but exists for completeness' sake. The following operators are supported:
