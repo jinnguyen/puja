@@ -48,7 +48,7 @@ You can assign values to variables inside code blocks. Assignments use the :
 <pre>
 {% set foo = 'foo' %}
 {% set foo = 5 %}</pre>
-- <strong>Special variable</strong>:<br />
+- <strong><a name="special_variable"></a>Special variable</strong>:<br />
 This is a special variable, it will compile very first. 
 <pre>
 $data = array('skin'=>'skin_default');
