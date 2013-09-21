@@ -43,13 +43,19 @@ So for speed purpose, you should put $section as array and set mode <strong>only
 ** <strong>Note</strong>: Variable names consist of any combination of alphanumeric characters and the underscore ("_"). The dot (".") also appears in variable sections, although that has a special meaning, as indicated below.<br />
 ** <strong>Importantly</strong>, you cannot have spaces or punctuation characters in variable names.
 Use a dot (.) to access attributes of a variable.
-
 - <strong>Setting Variables</strong><br />
 You can assign values to variables inside code blocks. Assignments use the :
 <pre>
 {% set foo = 'foo' %}
 {% set foo = 5 %}</pre>
-
+- <strong>Special variable</strong>:<br />
+This is a special variable, it will compile very first. 
+<pre>
+$data = array('skin'=>'skin_default');
+{% extends {$ skin $}/master.tpl %} 
+</pre>
+It sames with
+<pre>{% extends skin_default/master.tpl %}</pre>
 <strong>II. Oparators </strong><br />
 - <strong>Math</strong><br />
 Puja allows you to calculate with values. This is rarely useful in templates but exists for completeness' sake. The following operators are supported:
