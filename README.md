@@ -43,7 +43,7 @@ Welcome you go to the very first exmplate of Puja template.</pre>
   $data = array(
   	'username'=>'Jin Nguyen',
   );
-  $tpl->parse($data, $template_file = 'index.tpl');
+  $tpl->parse($template_file = 'index.tpl', $data);
   ?&gt;
 </pre>
 
