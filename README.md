@@ -1,7 +1,7 @@
 Puja
 ====
 
-Inspired in Django. Puja is a lightweight, flexible and easy PHP  template engine. Especial, Puja support validate template syntax!
+Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!
 
 <strong>Some of Puja's features</strong>:
 * <strong>VALIDATE TEMPLATE SYNTAX</strong>
