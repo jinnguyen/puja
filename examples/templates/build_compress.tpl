@@ -10,12 +10,21 @@
 		}
 		$.post('build_compress.php',$(doc).serialize(),function(data){
 			if(data.status){
+				$('#list_file').html('');
 				$(data.list_file).each(function(k,v){
-					$('#list_file').append('<p>'+v+'</p>');
+					$('#list_file').append('<p rel="'+v+'" class="source">'+v+'<span>Loading...</span></p>');
 				})	
 			}else{
 				$('#list_file').html(data.msg);
 			}
+			
+			$('.source').each(function(){
+				var file = $(this).attr('rel');
+				var obj = this;
+				$.get('build_compress',{'src':file,'folder':data.folder},function(data){
+					$(obj).find('span').html('OK');
+				})
+			})
 		},'json')
 		return false;
 	}

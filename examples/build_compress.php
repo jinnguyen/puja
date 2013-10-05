@@ -2,7 +2,7 @@
 ini_set('display_errors','On');
 
 function create_file($file,$content = ''){
-	$fp = @fopen($file,'w');
+	$fp = fopen($file,'w');
 	if(!$fp){
 		
 		echo json_encode(array('status'=>false,'msg'=>"You must set chmod 777 for ".dirname($file) ));
@@ -11,17 +11,43 @@ function create_file($file,$content = ''){
 	fwrite($fp,$content);
 	fclose($fp);
 }
+function file_struct($dir, &$array_file){
+	if ($dh = opendir($dir)){
+		while (($file = readdir($dh)) !== false){
+			if($file != '.' && $file != '..'){
+				if(is_dir($dir.DIRECTORY_SEPARATOR.$file)){
+					file_struct($dir.DIRECTORY_SEPARATOR.$file,$array_file);
+				}else{
+					$array_file[] =  $dir.DIRECTORY_SEPARATOR.$file;
+				}
+
+			}
+				
+		}
+		closedir($dh);
+	}
+
+}
+
 $target_folder = dirname(__FILE__);
+if($_GET){
+	$src = $_GET['src'];
+	$folder = $target_folder.DIRECTORY_SEPARATOR.$_GET['folder'].DIRECTORY_SEPARATOR;
+	$file_content = php_strip_whitespace($src);
+	create_file($folder.'src'.DIRECTORY_SEPARATOR.basename($src),$file_content);
+	//echo $src;
+	exit();
+}
 if($_POST){
 	$structures = array('src');
 	$folder = $target_folder.DIRECTORY_SEPARATOR.$_POST['folder'].DIRECTORY_SEPARATOR;
-	create_file($folder.'puja.php');
-	$list_file = array(
-		'puja.php',
-		'src/compiler.php',
-		'debug.html',
-	);
-	echo json_encode(array('status'=>true,'msg'=>'OK','list_file'=>$list_file));
+	mkdir($target_folder.DIRECTORY_SEPARATOR.$_POST['folder'].DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR,777,true);
+	//create_file($folder.'puja.php');
+	
+	$list_file = array();
+	file_struct(dirname($target_folder).DIRECTORY_SEPARATOR.'src',$list_file);
+	$list_file[] = dirname($target_folder).DIRECTORY_SEPARATOR.'puja.php';
+	echo json_encode(array('status'=>true,'msg'=>'OK','list_file'=>$list_file,'folder'=>$_POST['folder']));
 	//echo $folder;
 	exit();
 }
