@@ -17,14 +17,12 @@ Puja support validate syntax before the parser run compiler. This will helpfull 
 Example:
 file template: index.tpl:
 <pre>
-Hello {{ username },
+Hello {{ a },
 Welcome you go to the very first exmplate of Puja template.</pre>
 
 The result will be:
 <pre>
-TemplateSyntaxError: <strong>missing }}</strong>
-1. Hello <strong>{{ username </strong>,
-2. Welcome you go to the very first exmplate of Puja template.</pre>
+<img src="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" /></pre>
 
 Puja only show debug when mode <strong>debug</strong> is enabled<br />
 **  We recommend you should only enable mode <strong>debug</strong>  when your app is in develop. And disable it when your app go to production. It will save a lot time to template engine parser.
