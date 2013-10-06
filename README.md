@@ -16,9 +16,11 @@ Puja support validate syntax before the parser run compiler. This will helpfull 
 
 Example:
 file template: index.tpl:
-<pre>
-Hello {{ a },
-Welcome you go to the very first exmplate of Puja template.</pre>
+<pre>{% extends master.tpl %}
+{% block body %}
+	Hello, {{ a }
+	Welcome you go to Puja template examples
+{% endblock %}</pre>
 
 The result will be:
 <pre>
