@@ -32,5 +32,27 @@ If <strong>name</strong> is "I like puja", the output will be "puja" and "I like
 ** You can overwrite all built-in filter (even filter <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-filters.md#main">main</a>) by set the customer filter name same with built-in filter name.
 
 - <strong>II. Writing custom template tags</strong><br />
+Same with customer template filters, customer tags are just method of PHP class.
+For example, you need a new tag <strong>css</strong> to control version of css file.
+Here’s an example tags definition in PHP:<br />
+<strong>customer_tags.php</strong>
+<pre>&lt;?php
+  class CustomerTags{
+      function css($value, $arg = null){
+        return '<css src="'.$value.'?v=1" />;
+      }
+  }
+?&gt;
+</pre>
+<strong>main.php</strong><br />
+<pre>&lt;?php
+  include 'customer_tags.php';
+  $tpl = new Puja;
+  $tpl->customer_tags = new CustomerTags;
+?&gt;
+</pre>
+And here’s an example of how that filter would be used:
+<pre>{% css style.css %}</pre>
+The output will be &lt; src="style.css?v=1" /&gt;
 
 ** <i>Filter and tag methods should always return something. They shouldn’t raise exceptions. They should fail silently. In case of error, they should return either the original input or an empty string – whichever makes more sense.</i>
