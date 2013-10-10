@@ -64,11 +64,20 @@ User's guide
 	 * false: only include 1 level. This option will make faster.
 	 * */
 	<strong>var $include_multi_level = true;</strong>
+	/**
+	 * Consider include multi extends.
+	 * true: Default value. Allow extends multi level..
+	 * false: only include 1 level. This option will make faster.
+	 * */
+	<strong>var $extends_multi_level = true;</strong>
     
-    /**
-    Parse $data  to $tpl_file and display.
-    */
-    <strong>function parse($data = array(), $tpl_file = null, $content_type = 'text/html')</strong>{}
+    	/**
+	 * Parse template 
+	 * @param string $template_file
+	 * @param array $data
+	 * @param boonlean $return_value, display to browswer if $return_value = false, else return template string.
+	 */
+    	<strong>function parse($template_file,$data=array(),$return_value=false)</strong>{}
   }
   
 </pre>
