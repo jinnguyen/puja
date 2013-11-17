@@ -1,9 +1,5 @@
 <?php
-$include_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
-include $include_dir.'filter.php';
-include $include_dir.'tags.php';
-include $include_dir.'debug.php';
-include $include_dir.'cache.php';
+
 class TemplateException extends Exception{}
 class PujaCompiler{
 	var $template_dir = 'templates/';
@@ -23,7 +19,7 @@ class PujaCompiler{
 	var $_filter;
 	var $_tags;
 	var $_core_matches;
-	var $_operators;
+	var $_operators = array(' and ',' or ', ' not ',' in ',' is ', '%','!==','!=','>=','<=','===','==','<>','>','<','&&','||','!','+','-','*','/','=',';','__seperate__','__array_split__');
 	var $_cache;
 	var $_include_content = array();
 	var $_mtime = 0; 
@@ -58,6 +54,7 @@ class PujaCompiler{
 			if($mtime > $this->_mtime) $this->_mtime = $mtime;
 		}
 		$content =  file_get_contents($this->template_dir.$tpl_file);
+		$content = str_replace(array('\{#','\{$','\{{','\{%'),array('[:lpuja_comment:]','[:lpuja_specialvar:]','[:lpuja_variable:]','[:lpuja_percent:]'),$content);
 		//remove template comment
 		$content = preg_replace('/\{\#\s?(.*?)\s?\#\}/','',$content);
 		// parse instant variable
@@ -65,6 +62,7 @@ class PujaCompiler{
 		
 		if($this->debug){
 			$template_debug = new TemplateDebug;
+			$template_debug->operators = $this->_operators;
 			$template_debug->content = $content;
 			$template_debug->tpl_file = $this->template_dir.$tpl_file;
 			$template_debug->valid_syntax();
@@ -139,7 +137,7 @@ class PujaCompiler{
 		
 		if($var==='' || $var === null || is_numeric($var)) return $var;
 		if(substr($var,0,1) == '"' || substr($var,0,1) == "'"){
-			return str_replace('__template_engine_dot_','.',substr($var,1,-1));
+			return "'".str_replace('__template_engine_dot_','.',substr($var,1,-1))."'";
 		}
 		
 		$explode = explode('__template_engine_dot_',$var);
@@ -149,7 +147,7 @@ class PujaCompiler{
 			$var .= '[\''.implode('\'][\'',$explode).'\']';
 		}
 		$var = $var_prefix.$var;
-		return $isset?"isset({$var})?{$var}:".$default_value:$var;
+		return $isset?"(isset({$var})?{$var}:".$default_value.")":$var;
 	}
 	/**
 	 * Parse variable
@@ -160,7 +158,7 @@ class PujaCompiler{
 	 */
 	function compile_variable_filter($var){
 		$var = trim($var);
-		if(!$var) return ;
+		if(!$var) return $var;
 		$prefix = '';
 		$subfix = '';
 		$default_value = 'null';
@@ -222,9 +220,7 @@ class PujaCompiler{
 	 * @param string $content
 	 */
 	function compile_start($content){
-		$content = str_replace(array('\\','\\\{{','\\\}}','\''),
-				array('\\\\','[:ldelim:]','[:rdelim:]','\\\''), $content);
-		
+		$content = str_replace(array('\\','\''),array('\\\\','\\\''), $content);
 		return $content;
 	}
 	
@@ -233,7 +229,7 @@ class PujaCompiler{
 	 * @param string $content
 	 */
 	function compile_end($content){
-		$content = str_replace(array('[:ldelim:]','[:rdelim:]'),array('{{','}}'),$content);
+		$content = str_replace(array('[:lpuja_variable:]','[:lpuja_percent:]','[:lpuja_specialvar:]','[:lpuja_comment:]'),array('{{','{%','{$','{#'),$content);
 		return $content;
 	
 	}
@@ -361,29 +357,51 @@ class PujaCompiler{
 	 */
 	function parse($tpl_file, $data,$return_value = false){
 		
-		if(($this->cache_level || $this->parse_executer == 'include') && !$this->cache_dir){
-			throw new TemplateException('You must configure '.__CLASS__.'::cache_dir to compile');
+		if(!is_string($tpl_file)){
+			throw new TemplateException('Template file must be a string,given '.gettype($tpl_file));
+		}
+		
+		if(!is_array($data)){
+			throw new TemplateException('Template data must be array,given '.gettype($data));
+		}
+		
+		if(($this->cache_level || $this->parse_executer == 'include')){
+			if(!$this->cache_dir){
+				throw new TemplateException('You must configure Puja::cache_dir to process');
+			}
+			if(!is_writable($this->cache_dir)){
+				throw new TemplateException('Require permission  to write  on folder '.$this->cache_dir.'');
+			}	
 		}
 		
 		$this->_cache = new TemplateCache;
 		$this->_cache->dircache = $this->cache_dir;
 		$this->_cache->level = $this->cache_level;
 		
-		if($this->headers && is_array($this->headers)){
+		if($this->headers && is_array($this->headers) && is_array($data)){
 			$data = array_merge($this->headers, $data);
 		}
 		$this->_data = $data;
-				
+		if($this->data_only_array === false) $this->object2array($data);
+		if($this->cache_level == 2){
+			$cache = $this->_cache->get($tpl_file,0);//$this->_mtime = 0
+			if($cache['valid']){
+				extract($data);
+				include $cache['file'];
+				echo $ast_puja_template;
+				return;
+			}
+		}
+		
 		$content = $this->get_template_content( $tpl_file);
 		$content = $this->get_block_extends($content);
 		$content = $this->get_block_include($content);
-		
-		if($this->data_only_array === false) $this->object2array($data);
-		
+
 		$cache = $this->_cache->get($tpl_file,$this->_mtime);
 		if($cache['valid']){
 			extract($data);
 			include $cache['file'];
+			echo $ast_puja_template;
 			return;
 		}
 		
@@ -459,15 +477,12 @@ class PujaCompiler{
 			}
 			
 			$structure_str = implode(' __seperate__ __array_split__ __seperate__ ',$_arr);
-			
 			$this->_core_matches = $structure_matches;
 			
-			preg_match_all('/([a-z0-9\_\.]+)[\=\:](.*?)\s/i',$structure_str, $argument_matches);
+			//preg_match_all('/([a-z0-9\_\.]+)[\=\:](.*?)\s/i',$structure_str, $argument_matches);
 			
-			$oparator_support = array(' and ',' or ', ' not ',' in ',' is ', '%','!==','!=','>=','<=','===','==','<>','>','<','&&','||','!','+','-','*','/','=',';','__seperate__','__array_split__');
-			$this->_operators = $oparator_support;
 			$oparator_support_replace = array();
-			foreach($oparator_support as $key=>$v){
+			foreach($this->_operators as $key=>$v){
 				//$oparator_support_replace[$key] = '__xxx____operator_index_'.$key.'___xxx__';
 				
 				if($v == ' in '){
@@ -477,7 +492,7 @@ class PujaCompiler{
 				}
 				
 			}
-			$structure_str = str_replace($oparator_support,$oparator_support_replace,$structure_str);
+			$structure_str = str_replace($this->_operators,$oparator_support_replace,$structure_str);
 			$structure_split = explode('__xxx__', $structure_str);
 			
 			foreach($structure_split as  $key=>$var){
@@ -486,7 +501,6 @@ class PujaCompiler{
 					$structure_split[$key+1] = '__end_in_array__'.$structure_split[$key+1];
 				}
 			}
-			
 			foreach($structure_split as  $key=>$var){
 				$structure_split[$key] = $this->compile_variable_filter($var);
 			}
@@ -529,7 +543,7 @@ class PujaCompiler{
 			
 			$for_replace = array();
 			if(count($for_matches[0])) foreach($for_matches[0] as $key=>$tag){
-				$for_replace[$key] = '\'; if(isset('.$for_matches[2][$key].')){ foreach('.$for_matches[2][$key].' as '.str_replace(',','=>',$for_matches[1][$key]).'){ $ast_puja_template .= \'';
+				$for_replace[$key] = '\'; if(isset('.$for_matches[2][$key].') && count('.$for_matches[2][$key].')){ foreach('.$for_matches[2][$key].' as '.str_replace(',','=>',$for_matches[1][$key]).'){ $ast_puja_template .= \'';
 			}
 			$content = str_replace($for_matches[0],$for_replace,$content);
 			

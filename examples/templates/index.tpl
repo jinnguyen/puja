@@ -1,5 +1,5 @@
 {% extends master.tpl %}
 {% block body %}
-	Hello, {{ a }
+	Hello, 
 	Welcome you go to Puja template examples
 {% endblock %}

@@ -87,8 +87,7 @@ class Puja{
 	
 	
 	function __construct(){
-		$include_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
-		include $include_dir.'src/compiler.php';
+		
 	}
 	/**
 	 * Parse template 
@@ -96,7 +95,14 @@ class Puja{
 	 * @param array $data
 	 * @param boonlean $return_value
 	 */
-	function parse($template_file,$data=array(),$return_value=false){
+	function parse($template_file,$template_data=array(),$return_value=false){
+		$include_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
+		require $include_dir.'src/filter.php';
+		require $include_dir.'src/tags.php';
+		require $include_dir.'src/debug.php';
+		require $include_dir.'src/cache.php';
+		require $include_dir.'src/compiler.php';
+		
 		$tpl = new PujaCompiler;
 		$tpl->template_dir = $this->template_dir;
 		$tpl->cache_dir = $this->cache_dir;
@@ -109,7 +115,7 @@ class Puja{
 		$tpl->data_only_array = $this->data_only_array;
 		$tpl->include_multi_level = $this->include_multi_level;
 		$tpl->extends_multi_level = $this->extends_multi_level;
-		$context = $tpl->parse($template_file, $data, true);
+		$context = $tpl->parse($template_file, $template_data, true);
 		if ($return_value){
 			return $context;
 		}

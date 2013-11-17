@@ -29,9 +29,10 @@ include '../puja.php';
 $tpl = new Puja;
 $tpl->template_dir = 'templates/';
 $tpl->cache_dir = 'cache/';
+$tpl->cache_level = 1;
 $tpl->custom_filter = new CustomFilter;
 $tpl->custom_tags = new CustomTags;
-$tpl->parse_executer = 'eval';
+//$tpl->parse_executer = 'eval';
 $tpl->headers = array(
 	'tpl_file'=>'custom.tpl',
 	'php_file'=>highlight_file('custom.php',true),

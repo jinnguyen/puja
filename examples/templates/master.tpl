@@ -85,6 +85,7 @@ TqE0AAAAAElFTkSuQmCC" alt="Puja" /></div>
 			<a href="structure.php">Control Structures</a><br />
 			<a href="subtemplate.php">Sub Template</a><br />
 			<a href="filter.php">Filters</a><br />
+			<a href="template-syntax-error.php">Template syntax error</a><br />
 			<a href="custom.php">Custom filters and tags</a><br />
 			<a href="build_compress.php">Build compress version</a><br />
 		</td>
