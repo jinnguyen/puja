@@ -205,9 +205,9 @@ class PujaCompiler{
 			}
 			
 			if($this->_custom_filter && in_array('filter_'.$filter, $this->_custom_filter['methods'])){
-				$var = $this->_custom_filter['name'].'::filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$pujaCustomFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}elseif(in_array('filter_'.$filter,$this->_filter['methods'])){
-				$var = $this->_filter['name'].'::filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$pujaFilter->::filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}else{
 				throw new TemplateException('Filter <strong>'.$filter.'</strong> was not defined');
 			}
@@ -554,9 +554,9 @@ class PujaCompiler{
 				$var = 'file_get_contents(\''.$this->template_dir.$include_matches[2][$key].'\')';
 				if(trim($include_matches[3][$key]) == 'escape') $var = 'htmlentities('.$var.')';
 			}elseif($this->_custom_tags && in_array($tag, $this->_custom_tags['methods'])){
-				$var = $this->_custom_tags['name'].'::'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
+				$var = '$pujaCustomTags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}elseif($this->_tags && in_array($tag,$this->_tags['methods'])){
-				$var = $this->_tags['name'].'::'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
+				$var = '$pujaTags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}else{
 				throw new TemplateException('Tag <strong>'.$tag.'</strong> was not defined');
 			}
@@ -567,12 +567,16 @@ class PujaCompiler{
 		$content = $this->compile_end($content);
 		
 		extract($data);
-		$cache_file_content = '<?php  $ast_puja_template = \''.$content.'\';';
+		$new_class = '$pujaFilter = new '.$this->_filter['name'].';$pujaTags = new '.$this->_tags['name'].';';
+		if($this->_custom_filter['name']) $new_class .= '$pujaCustomFilter = new '.$this->_custom_filter['name'].';';
+		if($this->_custom_tags['name']) $new_class .= '$pujaCustomTags = new '.$this->_custom_tags['name'].';';
+		
+		$cache_file_content = '<?php '.$new_class.'  $ast_puja_template = \''.$content.'\';';
 		if($this->parse_executer == 'eval'){
 			$parse_error = true;
-			@eval('$ast_puja_template = \''.$content.'\';$parse_error=false;');
+			@eval($new_class.'$ast_puja_template = \''.$content.'\';$parse_error=false;');
 			if($parse_error){
-				highlight_string('<?php $ast_puja_template = \''.$content.'\'; ?>');
+				highlight_string($cache_file_content);
 			}
 			if($this->cache_level){ // > 0
 				$this->_cache->set($cache['file'], $cache_file_content);
