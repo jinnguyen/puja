@@ -14,6 +14,12 @@ Puja is a lightweight, flexible and easy PHP  template engine. Inspired in djang
 <strong>Validate syntax:</strong><br />
 Puja support validate syntax before the parser run compiler. This will helpfull for you to write template syntax.
 
+<strong>Download</strong><br />
+GIT: <i>git clone https://github.com/jinnguyen/puja.git</i><br />
+SVN: <i>svn checkout https://github.com/jinnguyen/puja.git</i><br />
+Source code: <i>https://github.com/jinnguyen/puja/archive/master.zip</i>
+
+
 Example:
 file template: index.tpl:
 <pre>{% extends master.tpl %}
