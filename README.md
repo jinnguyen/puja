@@ -19,6 +19,9 @@ GIT: <i>git clone https://github.com/jinnguyen/puja.git</i><br />
 SVN: <i>svn checkout https://github.com/jinnguyen/puja.git</i><br />
 Source code: <i>https://github.com/jinnguyen/puja/archive/master.zip</i>
 
+Bug list:
+https://github.com/jinnguyen/puja/issues?page=1&state=open
+
 
 Example:
 file template: index.tpl:
