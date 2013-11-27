@@ -121,7 +121,7 @@ header ul {
   width:270px;
 }
 
-header li {
+header ul li {
   width:89px;
   float:left;
   border-right:1px solid #d2d2d2;
@@ -136,6 +136,19 @@ header ul a {
   text-align:center;
   padding-top:6px;
   height:40px;
+}
+
+header ul.documents{
+  background:none;
+  border:0px;
+}
+header ul.documents li{
+  width:auto;
+  float:none;
+  border:0px;
+}
+header ul.documents a {
+  
 }
 
 strong {
