@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Puja - Django-like template engine for PHP, supports validate template syntax!</title>
+    <title>Puja by jinnguyen</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -16,93 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>Puja</h1>
-        <p><article class="markdown-body entry-content" itemprop="mainContentOfPage">
-        
-<p><strong>Some of Puja's features</strong>:</p>
-
-<ul>
-<li><strong>VALIDATE TEMPLATE SYNTAX</strong></li>
-<li>it is extremely fast</li>
-<li>no template parsing overhead, only compiles once.</li>
-<li>it is smart about recompiling only the template files that have changed.</li>
-<li>unlimited nesting of sections, conditionals, etc.</li>
-<li>built-in caching of template output.</li>
-</ul><p><strong>Validate syntax:</strong><br>
-Puja support validate syntax before the parser run compiler. This will helpfull for you to write template syntax.</p>
-
-<p><strong>Download</strong><br>
-GIT: <i>git clone <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
-SVN: <i>svn checkout <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
-Source code: <i><a href="https://github.com/jinnguyen/puja/archive/master.zip">https://github.com/jinnguyen/puja/archive/master.zip</a></i></p>
-
-<p>Bug list:
-<a href="https://github.com/jinnguyen/puja/issues?page=1&amp;state=open">https://github.com/jinnguyen/puja/issues?page=1&amp;state=open</a></p>
-
-<p>Example:
-file template: index.tpl:</p>
-
-<pre>{% extends master.tpl %}
-{% block body %}
-    Hello, {{ a }
-    Welcome you go to Puja template examples
-{% endblock %}</pre>
-
-The result will be:
-<pre><a href="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" target="_blank"><img src="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" style="max-width:100%;"></a></pre>
-
-Puja only show debug when mode <strong>debug</strong> is enabled<br>
-**  We recommend you should only enable mode <strong>debug</strong>  when your app is in develop. And disable it when your app go to production. It will save a lot time to template engine parser.
-<br><br><strong>Basic API Usage</strong>:<br>
-- template file: index.tpl
-<pre>Hello <strong>{{ username }}</strong>,
-Welcome you go to the very first exmplate of Puja template.</pre>
-
-- php file: index.php
-<pre>  &lt;?php
-  require_once '/path/to/puja.php';
-  $tpl = new Puja;
-  $tpl-&gt;tpl_dir = '/path/to/template/folder/';
-  $data = array(
-    'username'=&gt;'Jin Nguyen',
-  );
-  $tpl-&gt;parse($template_file = 'index.tpl', $data);
-  ?&gt;
-</pre>
-
-<p>The result will show:</p>
-
-<pre>Hello <strong>Jin Nguyen</strong>,
-Welcome you go to the very first exmplate of Puja template.</pre>
-
-<p>See <a href="https://github.com/jinnguyen/puja/tree/master/docs/user-guide.md">User's guide</a> for full information.<br></p>
-
-<p><strong>Template Inheritance</strong>:<br></p>
-
-<ul>
-<li>
-<p>master.tpl:</p>
-
-<pre>==== Start Master ===
-{% block body %}Master Body{% endblock body %}
-{% block javascript %}Master javascript{% endblock javascript %}
-==== End Master ====</pre>
-</li>
-<li>
-<p>index.tpl</p>
-
-<pre>{% block javascript %}<strong>Index javascript</strong>{% endblock javascript %}
-{% block body %}<strong>Index Body</strong>{% endblock body %}</pre>
-</li>
-</ul><p>And the result will be:</p>
-
-<pre>==== Start Master ===
-<strong>Index Body</strong>
-<strong>Index javascript</strong>
-==== End Master ====</pre>
-
-<p><a href="https://github.com/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a></p>
-
-<p><a href="http://githalytics.com/jinnguyen/puja"><img src="https://cruel-carlota.pagodabox.com/b3780dbe5ed7848e2f3d9c0f82be2607" alt="githalytics.com alpha" title="githalytics.com" style="max-width:100%;"></a></p></article></p>
+        <p>Inspired in Django. Puja is a lightweight, flexible and easy PHP  template engine. Especial, Puja support validate template syntax!</p>
 
         <p class="view"><a href="https://github.com/jinnguyen/puja">View the Project on GitHub <small>jinnguyen/puja</small></a></p>
 
@@ -114,98 +28,37 @@ Welcome you go to the very first exmplate of Puja template.</pre>
         </ul>
       </header>
       <section>
-        
-        <article class="markdown-body entry-content" itemprop="mainContentOfPage"><h1>
-<a name="puja-v10" class="anchor" href="#puja-v10"><span class="octicon octicon-link"></span></a>Puja v1.0</h1>
+        <h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
-<p>Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!</p>
+<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
 
-<p><strong>Some of Puja's features</strong>:</p>
+<pre><code>$ cd your_repo_root/repo_name
+$ git fetch origin
+$ git checkout gh-pages
+</code></pre>
 
-<ul>
-<li><strong>VALIDATE TEMPLATE SYNTAX</strong></li>
-<li>it is extremely fast</li>
-<li>no template parsing overhead, only compiles once.</li>
-<li>it is smart about recompiling only the template files that have changed.</li>
-<li>unlimited nesting of sections, conditionals, etc.</li>
-<li>built-in caching of template output.</li>
-</ul><p><strong>Validate syntax:</strong><br>
-Puja support validate syntax before the parser run compiler. This will helpfull for you to write template syntax.</p>
+<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
-<p><strong>Download</strong><br>
-GIT: <i>git clone <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
-SVN: <i>svn checkout <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
-Source code: <i><a href="https://github.com/jinnguyen/puja/archive/master.zip">https://github.com/jinnguyen/puja/archive/master.zip</a></i></p>
+<h3>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
 
-<p>Bug list:
-<a href="https://github.com/jinnguyen/puja/issues?page=1&amp;state=open">https://github.com/jinnguyen/puja/issues?page=1&amp;state=open</a></p>
+<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
 
-<p>Example:
-file template: index.tpl:</p>
+<h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
 
-<pre>{% extends master.tpl %}
-{% block body %}
-    Hello, {{ a }
-    Welcome you go to Puja template examples
-{% endblock %}</pre>
+<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
 
-The result will be:
-<pre><a href="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" target="_blank"><img src="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" style="max-width:100%;"></a></pre>
+<h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-Puja only show debug when mode <strong>debug</strong> is enabled<br>
-**  We recommend you should only enable mode <strong>debug</strong>  when your app is in develop. And disable it when your app go to production. It will save a lot time to template engine parser.
-<br><br><strong>Basic API Usage</strong>:<br>
-- template file: index.tpl
-<pre>Hello <strong>{{ username }}</strong>,
-Welcome you go to the very first exmplate of Puja template.</pre>
+<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
 
-- php file: index.php
-<pre>  &lt;?php
-  require_once '/path/to/puja.php';
-  $tpl = new Puja;
-  $tpl-&gt;tpl_dir = '/path/to/template/folder/';
-  $data = array(
-    'username'=&gt;'Jin Nguyen',
-  );
-  $tpl-&gt;parse($template_file = 'index.tpl', $data);
-  ?&gt;
-</pre>
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>The result will show:</p>
-
-<pre>Hello <strong>Jin Nguyen</strong>,
-Welcome you go to the very first exmplate of Puja template.</pre>
-
-<p>See <a href="https://github.com/jinnguyen/puja/tree/master/docs/user-guide.md">User's guide</a> for full information.<br></p>
-
-<p><strong>Template Inheritance</strong>:<br></p>
-
-<ul>
-<li>
-<p>master.tpl:</p>
-
-<pre>==== Start Master ===
-{% block body %}Master Body{% endblock body %}
-{% block javascript %}Master javascript{% endblock javascript %}
-==== End Master ====</pre>
-</li>
-<li>
-<p>index.tpl</p>
-
-<pre>{% block javascript %}<strong>Index javascript</strong>{% endblock javascript %}
-{% block body %}<strong>Index Body</strong>{% endblock body %}</pre>
-</li>
-</ul><p>And the result will be:</p>
-
-<pre>==== Start Master ===
-<strong>Index Body</strong>
-<strong>Index javascript</strong>
-==== End Master ====</pre>
-
-<p><a href="https://github.com/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a></p>
-
-<p><a href="http://githalytics.com/jinnguyen/puja"><img src="https://cruel-carlota.pagodabox.com/b3780dbe5ed7848e2f3d9c0f82be2607" alt="githalytics.com alpha" title="githalytics.com" style="max-width:100%;"></a></p></article>
-        
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/jinnguyen">jinnguyen</a></p>
