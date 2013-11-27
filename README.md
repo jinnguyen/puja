@@ -17,7 +17,7 @@ Puja support validate syntax before the parser run compiler. This will helpfull 
 <strong>Download</strong><br />
 GIT: <i>git clone https://github.com/jinnguyen/puja.git</i><br />
 SVN: <i>svn checkout https://github.com/jinnguyen/puja.git</i><br />
-Source code: <i>https://github.com/jinnguyen/puja/archive/master.zip</i>
+Source code: <i>https://github.com/jinnguyen/puja/zipball/master</i>
 
 Bug list:
 https://github.com/jinnguyen/puja/issues?page=1&state=open
