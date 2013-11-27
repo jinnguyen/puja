@@ -16,7 +16,93 @@
     <div class="wrapper">
       <header>
         <h1>Puja</h1>
-        <p>Inspired in Django. Puja is a lightweight, flexible and easy PHP  template engine. Especial, Puja support validate template syntax!</p>
+        <p><article class="markdown-body entry-content" itemprop="mainContentOfPage">
+        
+<p><strong>Some of Puja's features</strong>:</p>
+
+<ul>
+<li><strong>VALIDATE TEMPLATE SYNTAX</strong></li>
+<li>it is extremely fast</li>
+<li>no template parsing overhead, only compiles once.</li>
+<li>it is smart about recompiling only the template files that have changed.</li>
+<li>unlimited nesting of sections, conditionals, etc.</li>
+<li>built-in caching of template output.</li>
+</ul><p><strong>Validate syntax:</strong><br>
+Puja support validate syntax before the parser run compiler. This will helpfull for you to write template syntax.</p>
+
+<p><strong>Download</strong><br>
+GIT: <i>git clone <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
+SVN: <i>svn checkout <a href="https://github.com/jinnguyen/puja.git">https://github.com/jinnguyen/puja.git</a></i><br>
+Source code: <i><a href="https://github.com/jinnguyen/puja/archive/master.zip">https://github.com/jinnguyen/puja/archive/master.zip</a></i></p>
+
+<p>Bug list:
+<a href="https://github.com/jinnguyen/puja/issues?page=1&amp;state=open">https://github.com/jinnguyen/puja/issues?page=1&amp;state=open</a></p>
+
+<p>Example:
+file template: index.tpl:</p>
+
+<pre>{% extends master.tpl %}
+{% block body %}
+    Hello, {{ a }
+    Welcome you go to Puja template examples
+{% endblock %}</pre>
+
+The result will be:
+<pre><a href="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" target="_blank"><img src="https://raw.github.com/jinnguyen/puja/master/docs/images/Template-syntax-error.png" style="max-width:100%;"></a></pre>
+
+Puja only show debug when mode <strong>debug</strong> is enabled<br>
+**  We recommend you should only enable mode <strong>debug</strong>  when your app is in develop. And disable it when your app go to production. It will save a lot time to template engine parser.
+<br><br><strong>Basic API Usage</strong>:<br>
+- template file: index.tpl
+<pre>Hello <strong>{{ username }}</strong>,
+Welcome you go to the very first exmplate of Puja template.</pre>
+
+- php file: index.php
+<pre>  &lt;?php
+  require_once '/path/to/puja.php';
+  $tpl = new Puja;
+  $tpl-&gt;tpl_dir = '/path/to/template/folder/';
+  $data = array(
+    'username'=&gt;'Jin Nguyen',
+  );
+  $tpl-&gt;parse($template_file = 'index.tpl', $data);
+  ?&gt;
+</pre>
+
+<p>The result will show:</p>
+
+<pre>Hello <strong>Jin Nguyen</strong>,
+Welcome you go to the very first exmplate of Puja template.</pre>
+
+<p>See <a href="https://github.com/jinnguyen/puja/tree/master/docs/user-guide.md">User's guide</a> for full information.<br></p>
+
+<p><strong>Template Inheritance</strong>:<br></p>
+
+<ul>
+<li>
+<p>master.tpl:</p>
+
+<pre>==== Start Master ===
+{% block body %}Master Body{% endblock body %}
+{% block javascript %}Master javascript{% endblock javascript %}
+==== End Master ====</pre>
+</li>
+<li>
+<p>index.tpl</p>
+
+<pre>{% block javascript %}<strong>Index javascript</strong>{% endblock javascript %}
+{% block body %}<strong>Index Body</strong>{% endblock body %}</pre>
+</li>
+</ul><p>And the result will be:</p>
+
+<pre>==== Start Master ===
+<strong>Index Body</strong>
+<strong>Index javascript</strong>
+==== End Master ====</pre>
+
+<p><a href="https://github.com/jinnguyen/puja/tree/master/docs">more detail &gt;&gt; </a></p>
+
+<p><a href="http://githalytics.com/jinnguyen/puja"><img src="https://cruel-carlota.pagodabox.com/b3780dbe5ed7848e2f3d9c0f82be2607" alt="githalytics.com alpha" title="githalytics.com" style="max-width:100%;"></a></p></article></p>
 
         <p class="view"><a href="https://github.com/jinnguyen/puja">View the Project on GitHub <small>jinnguyen/puja</small></a></p>
 
