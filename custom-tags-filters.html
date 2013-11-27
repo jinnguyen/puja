@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Puja - Django-like template engine for PHP. Supports validate template syntax!</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css?v=1">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Puja</h1>
+        <p>Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!</p>
+        
+        
+        <ul>
+          <li><a href="https://github.com/jinnguyen/puja/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jinnguyen/puja/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jinnguyen/puja">View On <strong>GitHub</strong></a></li>
+        </ul>
+        
+        <h2>Documents</h2>
+        <ul class="documents">
+        <li><a href="index.html">Home</a></li>
+          <li><a href="overviews.html">Overviews</a></li>
+          <li><a href="built-in-tags.html">Built-in tags</a></li>
+          <li><a href="built-in-filters.html">Built-in filters</a></li>
+          <li><a href="custom-tags-filters.html">Custom tags and filters</a></li>
+          <li><a href="user-guide.html">User guide</a></li>
+          <li><a href="coding-standards.html">Coding standards</a></li>
+        </ul>
+      </header>
+      <section>
+        
+        
+        
+        <!-- Begin body -->
+        
+
+
+
+<h1>Custom template tags</h1>
+
+<p>Puja’s template system comes with a wide variety of <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-tags.md">built-in tags</a> and <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-filters.md">filters</a> designed to address the presentation logic needs of your application. 
+Hoever, sometime you may find yourself needing functionality that is not covered by the core set of template primitives. You can extend the template engine by defining custom tags and filters using PHP, and then make them available to your template.</p>
+
+<ul>
+<li>
+<p><strong>I. Writing custom template filters</strong><br>
+Custom filters are just method of PHP class.<br>
+For example, you need a new filter <strong>cutend</strong> to cut a number end characters of the string.<br>
+Here’s an example filter definition in PHP:<br><strong>customer_filters.php</strong></p>
+
+<pre>&lt;?php
+class CustomerFilter{
+    function filter_cutend($value, $arg = null){
+      if(!$arg) return $value;
+      return substr($value, - $arg);
+    }
+}
+?&gt;
+</pre>
+
+<p><strong>main.php</strong><br></p>
+
+<pre>&lt;?php
+include 'customer_filters.php';
+$tpl = new Puja;
+$tpl-&gt;customer_filter = new CustomerFilter;
+?&gt;
+</pre>
+
+<p>And here’s an example of how that filter would be used:</p>
+
+<pre>{{ name|cutend:4 }} // have argument
+{{ name|cutend }} // no argument
+</pre>
+
+<p>If <strong>name</strong> is "I like puja", the output will be "puja" and "I like puja".<br>
+** You can overwrite all built-in filter (even filter <a href="https://github.com/jinnguyen/puja/blob/master/docs/built-in-filters.md#main">main</a>) by set the customer filter name same with built-in filter name.</p>
+</li>
+<li>
+<p><strong>II. Writing custom template tags</strong><br>
+Same with customer template filters, customer tags are just method of PHP class.
+For example, you need a new tag <strong>css</strong> to control version of css file.
+Here’s an example tags definition in PHP:<br><strong>customer_tags.php</strong></p>
+
+<pre>&lt;?php
+class CustomerTags{
+    function css($value, $arg = null){
+      return ';
+    }
+}
+?&gt;
+</pre>
+
+<p><strong>main.php</strong><br></p>
+
+<pre>&lt;?php
+include 'customer_tags.php';
+$tpl = new Puja;
+$tpl-&gt;customer_tags = new CustomerTags;
+?&gt;
+</pre>
+
+<p>And here’s an example of how that filter would be used:</p>
+
+<pre>{% css style.css %}</pre>
+
+<p>The output will be &lt; src="style.css?v=1" /&gt;</p>
+</li>
+</ul><p>** <i>Filter and tag methods should always return something. They shouldn’t raise exceptions. They should fail silently. In case of error, they should return either the original input or an empty string – whichever makes more sense.</i></p></article>
+
+
+<!-- Endbody -->
+        
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

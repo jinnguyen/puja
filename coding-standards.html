@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Puja - Django-like template engine for PHP. Supports validate template syntax!</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css?v=1">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Puja</h1>
+        <p>Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!</p>
+        
+        
+        <ul>
+          <li><a href="https://github.com/jinnguyen/puja/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jinnguyen/puja/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jinnguyen/puja">View On <strong>GitHub</strong></a></li>
+        </ul>
+        
+        <h2>Documents</h2>
+        <ul class="documents">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="overviews.html">Overviews</a></li>
+          <li><a href="built-in-tags.html">Built-in tags</a></li>
+          <li><a href="built-in-filters.html">Built-in filters</a></li>
+          <li><a href="custom-tags-filters.html">Custom tags and filters</a></li>
+          <li><a href="user-guide.html">User guide</a></li>
+          <li><a href="coding-standards.html">Coding standards</a></li>
+        </ul>
+      </header>
+      <section>
+        
+        
+        
+        <!-- Begin body -->
+        
+
+
+
+<h1>Coding Standards</h1>
+
+<p>When writing Puja templates, we recommend you to follow these official coding standards:</p>
+
+<ul>
+<li>Put one (and only one) space after the start of a delimiter ({{, {%, and {#) and before the end of a delimiter (}}, %}, and #}):
+{{ foo }}
+<pre>{# comment content #}
+{% if foo %}do somthing{% endif %}
+</pre>
+</li>
+<li>
+<p>Put one (and only one) space before and after the following operators: comparison operators (==, !=, &lt;, &gt;, &gt;=, &lt;= , !), math operators (+, -, /, *, %), logic operators (not, and, or), ~, is, in:</p>
+
+<pre>{{ 1 + 2 }}
+{{ a or b }}</pre>
+</li>
+<li>
+<p>Do not put any spaces after an opening parenthesis and before a closing parenthesis in expressions:</p>
+
+<pre>{{ 1 + (2 * 3) }}</pre>
+</li>
+<li>
+<p>Do not put any spaces before and after string delimiters:</p>
+
+<pre>{{ 'foo' }}
+{{ "foo" }}</pre>
+</li>
+<li>
+<p>Do not put any spaces before and after the following operators: |, .:</p>
+
+<pre>{{ foo|upper|lower }}
+{{ user.name }}</pre>
+</li>
+<li>
+<p>Do not put single quote (') and double quote (") before and after the file name in tag <strong>include</strong>, <strong>extends</strong>:</p>
+
+<pre>{% include include_file.tpl %}
+{% extends master.tpl %}
+</pre>
+</li>
+<li>
+<p>Use lower cased and underscored variable names:</p>
+
+<pre>{% set foo = 'foo' %}
+{% set foo_bar = 'foo' %}</pre>
+</li>
+<li>
+<p>Indent your code inside tags (use the same indentation as the one used for the main language of the file):</p>
+
+<pre>{% block body %}
+{% if true %}
+   true
+{% endif %}
+{% endblock body %}
+</pre>
+</li>
+</ul>
+
+
+<!-- Endbody -->
+        
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
