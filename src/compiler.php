@@ -207,7 +207,7 @@ class PujaCompiler{
 			if($this->_custom_filter && in_array('filter_'.$filter, $this->_custom_filter['methods'])){
 				$var = '$pujaCustomFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}elseif(in_array('filter_'.$filter,$this->_filter['methods'])){
-				$var = '$pujaFilter->::filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$pujaFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}else{
 				throw new TemplateException('Filter <strong>'.$filter.'</strong> was not defined');
 			}
