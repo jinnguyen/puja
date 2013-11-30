@@ -1,6 +1,6 @@
 <?php
 
-class TemplateException extends Exception{}
+class PujaException extends Exception{}
 class PujaCompiler{
 	var $template_dir = 'templates/';
 	var $cache_dir;
@@ -46,7 +46,7 @@ class PujaCompiler{
 	function get_template_content($tpl_file){
 		$tpl_file = $this->remove_quote($tpl_file);
 		if(!file_exists($this->template_dir.$tpl_file)){
-			throw new TemplateException('Template <strong>'.$this->template_dir.$tpl_file.'</strong> doesn\'t exists!');
+			throw new PujaException('Template <strong>'.$this->template_dir.$tpl_file.'</strong> doesn\'t exists!');
 		}
 		
 		if($this->cache_level == 1){
@@ -209,7 +209,7 @@ class PujaCompiler{
 			}elseif(in_array('filter_'.$filter,$this->_filter['methods'])){
 				$var = '$pujaFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}else{
-				throw new TemplateException('Filter <strong>'.$filter.'</strong> was not defined');
+				throw new PujaException('Filter <strong>'.$filter.'</strong> was not defined');
 			}
 		}
 		return $var;
@@ -358,19 +358,19 @@ class PujaCompiler{
 	function parse($tpl_file, $data,$return_value = false){
 		
 		if(!is_string($tpl_file)){
-			throw new TemplateException('Template file must be a string,given '.gettype($tpl_file));
+			throw new PujaException('Template file must be a string,given '.gettype($tpl_file));
 		}
 		
 		if(!is_array($data)){
-			throw new TemplateException('Template data must be array,given '.gettype($data));
+			throw new PujaException('Template data must be array,given '.gettype($data));
 		}
 		
 		if(($this->cache_level || $this->parse_executer == 'include')){
 			if(!$this->cache_dir){
-				throw new TemplateException('You must configure Puja::cache_dir to process');
+				throw new PujaException('You must configure Puja::cache_dir to process');
 			}
 			if(!is_writable($this->cache_dir)){
-				throw new TemplateException('Require permission  to write  on folder '.$this->cache_dir.'');
+				throw new PujaException('Require permission  to write  on folder '.$this->cache_dir.'');
 			}	
 		}
 		
@@ -558,7 +558,7 @@ class PujaCompiler{
 			}elseif($this->_tags && in_array($tag,$this->_tags['methods'])){
 				$var = '$pujaTags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}else{
-				throw new TemplateException('Tag <strong>'.$tag.'</strong> was not defined');
+				throw new PujaException('Tag <strong>'.$tag.'</strong> was not defined');
 			}
 			$include_matches[1][$key] = '\'; $ast_puja_template .= '.$var.';$ast_puja_template .= \'';
 		}

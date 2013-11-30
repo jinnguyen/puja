@@ -44,13 +44,13 @@
 		 * Write cache content to file
 		 * @param string $cache_file
 		 * @param string $cache_content
-		 * @throws TemplateException
+		 * @throws PujaException
 		 */
 		function set($cache_file, $cache_content){
 			
 			$fp = @fopen($cache_file,'w');
 			if(!$fp){
-				throw new TemplateException('Require permision for folder '.$this->dircache);
+				throw new PujaException('Require permision for folder '.$this->dircache);
 			}
 			fwrite($fp, $cache_content);
 			fclose($fp);
