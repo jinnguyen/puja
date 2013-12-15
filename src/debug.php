@@ -96,7 +96,8 @@ class TemplateDebug{
 	}
 	function valid_syntax(){
 		$this->content = preg_replace('/\{\#\s*(.*?)\s*\#\}/','',$this->content);
-		preg_match_all('/\{\%\s*([a-z0-9]*?)\s(.*?)(\{\%|\n)/', $this->content, $matches);
+		preg_match_all('/\{\%\s*([a-z0-9]*?)\s(.*?)\s*(\{\%|\n)/', $this->content, $matches);
+		
 		
 		if($matches[0]){
 			$index_all = 0;
@@ -291,27 +292,29 @@ class TemplateDebug{
 		if(count($this->nodelist['if']['tag']) == 0) return true;
 		$this->validate_if_start_end($this->nodelist['if']['tag']);
 		$if_levels = array();
+		//print_r($this->nodelist['if']['tag']);
 		foreach($this->nodelist['if']['tag'] as $index=>$tag){
-			$len = count($if_levels);
 			if($tag['name'] == 'if'){
 				if(trim($tag['arg'])=='') $this->trace_bug('if',$index,'wrong_syntax');
-				$if_levels[] = array($tag);
+				$if_levels[count($if_levels)] = array($tag);
 			}elseif($tag['name'] == 'elseif' || $tag['name'] == 'else'){
+				$len = count($if_levels) -1;
 				if($tag['name'] == 'elseif' && trim($tag['arg'])=='') $this->trace_bug('if',$index,'wrong_syntax');
 				if($tag['name'] == 'else' && trim($tag['arg'])) $this->trace_bug('if',$index,'wrong_syntax');
-				$sub_len = count($if_levels[$len-1]);
-				if($if_levels[$len-1][$sub_len - 1]['name'] == 'else'){
+				
+				$sub_len = count($if_levels[$len]) - 1;
+				if($if_levels[$len][$sub_len]['name'] == 'else'){
 					$this->trace_bug('if',$index);
-				}else{
-					$if_levels[$len-1][] = $tag;
-				}			
+				}
+				$if_levels[$len][] = $tag;	
 			}elseif($tag['name'] == 'endif'){
 				if(trim($tag['arg'])) $this->trace_bug('if',$index,'wrong_syntax');
-				$if_levels[$len - 1][] = $tag;
-				unset($if_levels[$len - 1]);
-				if(count($if_levels) == 0) $if_levels = array();
+				$if_levels[count($if_levels) -1][] = $tag;
+				unset($if_levels[count($if_levels) -1]);
 			}
+			
 		}
+		print_r($if_levels);
 		//print_r($if_levels);
 		if(count($if_levels)){
 			foreach($if_levels as $k=>$array_if) $this->validate_if_start_end($array_if);
