@@ -2,7 +2,7 @@
 
 class PujaException extends Exception{}
 class PujaCompiler{
-	var $template_dir = 'templates/';
+	var $template_dirs = 'templates/';
 	var $cache_dir;
 	var $cache_level;
 	var $parse_executer = 'include';
@@ -304,15 +304,10 @@ class PujaCompiler{
 	 * @return string
 	 */
 	function build_query($formdata, $numeric_prefix=null,$arg_separtor='&'){
-		if(function_exists('http_build_query')){
-			return http_build_query($formdata,$numeric_prefix,$arg_separtor);
-		}else{
-			$arr = array();
-			foreach($formdata as $key=>$val){
-				$arr[] = $numeric_prefix.$key."=".$val;
-			}
-			return implode($arg_separtor,$arr);
+		if(!function_exists('http_build_query')){
+			throw new PujaException('Function http_build_query is required');
 		}
+		return http_build_query($formdata,$numeric_prefix,$arg_separtor);
 		
 	}
 	
@@ -415,7 +410,7 @@ class PujaCompiler{
 		}
 		
 		$content = $this->compile_start($content);
-		$builtin_tags = array('before_include|after_include|empty|endfor|if|elseif|else|endif|set');
+		$builtin_tags = array('before_include|after_include|empty|endfor|if|elseif|else|endif|set|print');
 		preg_match_all('/\{\%\s*('.implode('|',$builtin_tags).')\s+(.*?)\s*\%\}/',$content, $matches);
 		preg_match_all('/\{\%\s*for\s*([a-z0-9\_\,\s]*?)\s+in\s+([a-z0-9\.\_]*?)\s*\%\}/is',$content,$for_matches);
 		preg_match_all('/\{\%\s*(get_file'.(isset($this->_custom_tags['methods'])?'|'.implode('|',$this->_custom_tags['methods']):'').')\s+(.*?)\s+(.*?)\s*\%\}/',$content, $include_matches);
@@ -521,6 +516,7 @@ class PujaCompiler{
 					case 'else':$matches_replace[$key] = '\';} else { $ast_puja_template .= \''; break;
 					case 'endif':$matches_replace[$key] = '\';} $ast_puja_template .= \''; break;
 					case 'empty': $matches_replace[$key] = '\';}}else{if(true){ $ast_puja_template .= \'';break;
+					case 'print':$matches_replace[$key] = '\';print_r('.$matches[2][$key].'); $ast_puja_template .= \'';break;
 					case 'set': 
 					case 'before_include': 
 					case 'after_include': $matches_replace[$key] = '\';'.$matches[2][$key].' $ast_puja_template .= \'';break;

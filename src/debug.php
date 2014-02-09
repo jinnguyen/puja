@@ -18,7 +18,7 @@ class TemplateDebug{
 		'undefined'=>'undefined',
 		'multi_extends'=>"'extends' cannot appear more than once in the same template",
 		'extends_multi_file'=>"'extends' takes one argument",
-		'wrong_syntax'=>'wrong syntax',
+		
 		'missing_end_block'=>'Missing end block %}',
 		'missing_end_variable'=>'missing end block }}',
 		'missing_enblock'=>'missing {% endblock %} for %s',
@@ -30,13 +30,27 @@ class TemplateDebug{
 		'wrong_php_variable'=>'Wrong PHP variable name',
 		'wrong_operator'=>'Wrong operator in begin',
 		//'wrong_operator_in_end'=>'Wrong operator end'
+	
+		'invalid_block_tag'=>"Invalid block tag: '{tag}'",
+		'invalid_block_tag_and_expected_if_tags'=>"Invalid block tag: '{tag}', expected  'elseif', 'else' or 'endif'",
+		'invalid_block_tag_and_expected_endif'=>"Invalid block tag: '{tag}', expected  'endif'",
+		'invalid_block_tag_and_expected_for_tags'=>"Invalid block tag: '{tag}', expected  'empty' or 'endfor'",
+		'invalid_block_tag_and_expected_endfor'=>"Invalid block tag: '{tag}', expected  'endfor'",
+		'invalid_block_tag_and_expected_endblock'=>"Invalid block tag: '{tag}', expected  'endblock'",
+		'expected_tag'=>'Expected {tag}',
+		'wrong_syntax'=>'wrong syntax',
+		'dont_support_tag'=>'Tag {tag} dont support on this version!',
+		'suggest_for' => 'Invalid tag: for, sample: {% for rs in news %} or {% for key,value in news %}',
+		'suggest_tag_without_arg'=>'Invalid tag: {tag}, sample: {% {tag} %}',
+		'suggest_if_elseif'=>'Invalid tag: {tag}, sample {% {tag} variable %}'
+		
 		
 	);
 	function __construct(){
 		
 	}
 	function valid_operator(){
-		preg_match_all('/\{\%\s*(if|elseif|set)\s+(.*?)\s*\%\}/',$this->content, $matches);
+		preg_match_all('/\{\%\s*(if|elseif|set|print)\s+(.*?)\s*\%\}/',$this->content, $matches);
 		preg_match_all('/\{\{\s*([^\{\}]*?)\s*\}\}/',$this->content, $variable_matches);
 		
 		if(count($matches[2]) || count($variable_matches[1])){
@@ -94,11 +108,73 @@ class TemplateDebug{
 			
 		}
 	}
+	
+	function trace_bug($tag,$error_type,$error_tag = null){
+		
+		if(!$this->debug_html){
+			$this->debug_html = file_get_contents('debug.html',true);
+		}
+		
+		$content = htmlentities($this->content,NULL,'utf-8');
+		
+		$content = preg_replace('/'.$tag.'/','<span class="__template__engine_current_line__ current_bug">'.str_replace(array('{%','%}'),array('{+%+','+%+}'),$tag).'</span>',$content,1);
+		$content = str_replace(array('{+%+','+%+}'),array('{%','%}'),$content);
+		
+		$lines = explode("\n",$content);
+		$bug_content = '';
+		$current_line = count($lines);
+		foreach($lines as $line=>$val){
+			$bug_content .= '<li class="line_'.($line+1).'">'.$val."</li>";
+			if(strpos($val,'__template__engine_current_line__')) $current_line = $line + 1;
+		
+		}
+		
+		$error_message = str_replace('{tag}',$error_tag?$error_tag:$tag,$this->error[$error_type]);
+		
+		echo str_replace(array('{{tpl_file}}','{{error_body}}','{{line}}','{{error_message}}'),array($this->tpl_file,$bug_content,$current_line,$error_message),$this->debug_html);
+		exit();
+	}
+	
+	function valid_syntax_detail($tag,$full_tag,$arg){
+		switch($tag){
+			case 'for':
+				if(!$arg) $this->trace_bug($full_tag, 'suggest_'.$tag);
+				if(!preg_match('/\s+([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/',' '.$arg.' ')
+					&&!preg_match('/\s+([a-z0-9\_]+?)\s*,\s*([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/',' '.$arg.' ')) $this->trace_bug($full_tag, 'suggest_'.$tag);
+				break;
+			case 'empty':
+			case 'endfor':
+			case 'else':
+			case 'endif':
+				if($arg) $this->trace_bug($full_tag, 'suggest_tag_without_arg',$tag);
+				break;
+			case 'if':
+			case 'elseif':
+				if(!$arg) $this->trace_bug($full_tag, 'suggest_if_elseif',$tag);
+				//echo '---'.$this->compile_variable($arg).'<br />';
+				break;
+			case 'include':
+				if(!$arg) $this->trace_bug($full_tag, 'suggest_if_elseif',$tag);
+				break;
+			case 'get_file':
+				break;
+		}
+	}
 	function valid_syntax(){
+		$start = microtime();
+		//echo '-------<br />';
+		/*
+		$bug = true;
+		@eval('$debug_test = $a++$b;$bug=false;');
+		echo '-----'.(microtime() - $start).'<br />';
+		if($bug){
+			throw new Exception('Error template bug');
+		}*/
+		//echo '-------<br />';
+		
 		$this->content = preg_replace('/\{\#\s*(.*?)\s*\#\}/','',$this->content);
+		/*
 		preg_match_all('/\{\%\s*([a-z0-9]*?)\s(.*?)\s*(\{\%|\n)/', $this->content, $matches);
-		
-		
 		if($matches[0]){
 			$index_all = 0;
 			foreach($matches[0] as $index=>$tag){
@@ -111,9 +187,10 @@ class TemplateDebug{
 				}
 			}
 		}
+		*/
 		
+		//Validate end tag
 		preg_match_all('/\{\{\s([a-z0-9\|\.]*?)\s(.*?)(\{\{|\n)/', $this->content, $matches);
-		//print_r($matches);
 		if($matches[0]){
 			$index_all = 0;
 			foreach($matches[0] as $index=>$tag){
@@ -127,6 +204,8 @@ class TemplateDebug{
 			}
 		}
 		
+		
+		//validate variable
 		preg_match_all('/\{\{\s*(.*?)\s*\}\}/',$this->content, $matches);
 		if($matches[0]){
 			$index_all = 0;
@@ -138,6 +217,59 @@ class TemplateDebug{
 		}
 		
 		
+		// validate control structors
+		preg_match_all('/\{\%\s*([a-z0-9\_]*?)\s(.*?)\%\}/i', $this->content, $matches);
+		if(count($matches[1])){
+			$levels = array();
+			$expect_ends = array('if'=>'endif','for'=>'endfor','block'=>'endblock');
+			$expect_ends_flip = array_flip($expect_ends);
+			$builtin_tags = array('extends','include','set','get_file','block','endblock','if','elseif','else','endif','for','empty','endfor','print');
+			
+			foreach($matches[1] as $key=>$tag){
+				
+				$arg = trim($matches[2][$key]);
+				$full_match = $matches[0][$key];
+				
+				if(!in_array($tag,$builtin_tags)){
+					$this->trace_bug($full_match,'dont_support_tag',$tag);
+				}
+				if(in_array($tag,array('if','for','block'))){
+					$len = count($levels);
+					$levels[$len] = array($tag);
+					
+				}elseif(in_array($tag,array('elseif','else','empty'))){
+					$len = count($levels) - 1 ;
+					if($levels[$len][0] == 'block'){
+						$this->trace_bug($full_match,'invalid_block_tag_and_expected_endblock');
+					}elseif($levels[$len][0] == 'if'){
+						if($tag == 'empty') $this->trace_bug($full_match,'invalid_block_tag_and_expected_if_tags');
+						$lensub = count($levels[$len]) - 1;
+						if($levels[$len][$lensub] == 'else') $this->trace_bug($full_match,'invalid_block_tag_and_expected_endif');
+					}elseif($levels[$len][0] == 'for'){
+						if(in_array($tag,array('else','elseif'))) $this->trace_bug($full_match,'invalid_block_tag_and_expected_for_tags');
+						$lensub = count($levels[$len]) - 1;
+						if($levels[$len][$lensub] == 'empty') $this->trace_bug($full_match,'invalid_block_tag_and_expected_endfor');
+					}
+					$levels[$len][] = $tag;
+				}elseif(in_array($tag,array('endif','endfor','endblock'))){
+					$len = count($levels) -1 ;
+					if($len < 0 || $levels[$len][0] != $expect_ends_flip[$tag]) $this->trace_bug($full_match,'invalid_block_tag',$expect_ends[$levels[$len][0]]);
+					unset($levels[$len]);
+				}
+				
+				$this->valid_syntax_detail($tag,$matches[0][$key], $arg);
+				$this->content = preg_replace('#'.preg_quote(str_replace('/','\/',$full_match)).'#',str_replace(array('{%','%}'),array('{+%+','+%+}'),$full_match),$this->content,1);
+			}
+			
+			while(count($levels)){
+				$len = count($levels) - 1;
+				$last_item = $levels[$len];
+				$this->trace_bug($last_item[0], 'expected_tag',$expect_ends[$last_item[0]]);
+			}
+			
+			
+		}
+		/*
 		preg_match_all('/\{\%\s*([a-z0-9]*?)\s(.*?)\%\}/i', $this->content, $matches);
 		if(count($matches[1])){
 			$index_extends = 0;
@@ -181,7 +313,7 @@ class TemplateDebug{
 				
 				
 			}
-		}
+		}*/
 		$this->validate_extends();
 		$this->validate_block();
 		$this->validate_variable();
@@ -211,7 +343,7 @@ class TemplateDebug{
 		}
 	}
 	//function trace_bug_operator()
-	function trace_bug($block, $index = 0, $error_code = 0){
+	function trace_bug_bk($block, $index = 0, $error_code = 0){
 		$data_replace = array();
 		$data_search = array();
 		foreach($this->nodelist[$block]['tag_full'] as $key=>$val){
