@@ -2,7 +2,7 @@
 
 class PujaException extends Exception{}
 class PujaCompiler{
-	var $template_dirs = 'templates/';
+	var $template_dir = 'templates/';
 	var $cache_dir;
 	var $cache_level;
 	var $parse_executer = 'include';
@@ -305,7 +305,7 @@ class PujaCompiler{
 	 */
 	function build_query($formdata, $numeric_prefix=null,$arg_separtor='&'){
 		if(!function_exists('http_build_query')){
-			throw new PujaException('Function http_build_query is required');
+			throw new PujaException('Puja requires http_build_query()');
 		}
 		return http_build_query($formdata,$numeric_prefix,$arg_separtor);
 		
