@@ -1,0 +1,10 @@
+# eclipse
+.project
+.buildpath
+
+# jetbrains
+.idea
+*.iml
+
+# phpunit
+build
