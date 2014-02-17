@@ -1,10 +1,9 @@
 <?php
-class TemplateTags{
-	
-	function __construct(){
-		
-	}
-	
-	
+
+/**
+ * Class TemplateTags
+ */
+class TemplateTags
+{
+    // TODO maybe move extend|block|commend tags to this library?
 }
-?>
