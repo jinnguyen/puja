@@ -1,10 +1,10 @@
 <?php 
-	class TemplateCache{
+	class PujaCache{
 		/**
 		 * The folder containt cached files<p>
 		 * @var string
 		 */
-		var $dircache;
+		public $dircache;
 		/**
 		 * Cache level<p>
 		 * 0: No cache<p>
@@ -12,9 +12,9 @@
 		 * 2: NOT update each user modify template, only update when user delete cached file manualy
 		 * @var int
 		 */
-		var $level;
+		public $level;
 		
-		function __construct(){
+		public function __construct(){
 			
 		}
 		
@@ -24,7 +24,7 @@
 		 * @param int $template_mtime: last modified time file.
 		 * @return Array('file'=>file_cache, 'valid'=> file cache validate)
 		 */
-		function get($tpl_name, $template_mtime = 0){
+		public function get($tpl_name, $template_mtime = 0){
 			$tpl_name = str_replace('/','__slash__',$tpl_name);
 			$cache_file =  $this->dircache.$tpl_name.'.php';
 			$validate = false;
@@ -46,12 +46,13 @@
 		 * @param string $cache_content
 		 * @throws PujaException
 		 */
-		function set($cache_file, $cache_content){
-			
-			$fp = @fopen($cache_file,'w');
-			if(!$fp){
+		public function set($cache_file, $cache_content){
+			try {
+				$fp = fopen($cache_file,'w');
+			} catch (Exception $e) {
 				throw new PujaException('Require permision for folder '.$this->dircache);
 			}
+			
 			fwrite($fp, $cache_content);
 			fclose($fp);
 		}

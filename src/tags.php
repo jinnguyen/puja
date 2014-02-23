@@ -1,7 +1,7 @@
 <?php
-class TemplateTags{
+class PujaTags{
 	
-	function __construct(){
+	public function __construct(){
 		
 	}
 	

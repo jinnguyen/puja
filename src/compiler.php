@@ -2,30 +2,30 @@
 
 class PujaException extends Exception{}
 class PujaCompiler{
-	var $template_dir = 'templates/';
-	var $cache_dir;
-	var $cache_level;
-	var $parse_executer = 'include';
-	var $custom_filter;
-	var $custom_tags;
-	var $debug = false;
-	var $headers = array();
-	var $data_only_array  = false;
-	var $include_multi_level = true;
-	var $extends_multi_level = true;
+	public $template_dirs = 'templates/';
+	public $cache_dir;
+	public $cache_level;
+	public $parse_executer = 'include';
+	public $custom_filter;
+	public $custom_tags;
+	public $debug = false;
+	public $headers = array();
+	public $data_only_array  = false;
+	public $include_multi_level = true;
+	public $extends_multi_level = true;
 	
-	var $_custom_filter;
-	var $_custom_tags;
-	var $_filter;
-	var $_tags;
-	var $_core_matches;
-	var $_operators = array(' and ',' or ', ' not ',' in ',' is ', '%','!==','!=','>=','<=','===','==','<>','>','<','&&','||','!','+','-','*','/','=',';','__seperate__','__array_split__');
-	var $_cache;
-	var $_include_content = array();
-	var $_mtime = 0; 
-	var $_data = array();
+	private  $_custom_filter;
+	private  $_custom_tags;
+	private  $_filter;
+	private  $_tags;
+	private  $_core_matches;
+	private  $_operators = array(' and ',' or ', ' not ',' in ',' is ', '%','!==','!=','>=','<=','===','==','<>','>','<','&&','||','!','+','-','*','/','=',';','__seperate__','__array_split__');
+	private  $_cache;
+	private  $_include_content = array();
+	private  $_mtime = 0; 
+	private  $_data = array();
 	
-	function __construct(){
+	public   function __construct(){
 		if(ini_get('magic_quotes_gpc')) ini_set('magic_quotes_gpc',false);
 		if(ini_get('magic_quotes_runtime')) ini_set('magic_quotes_runtime',false);
 	}
@@ -33,8 +33,18 @@ class PujaCompiler{
 	 * Get template callback
 	 * @param Array $matches
 	 */
-	function get_template_content_callback($matches){
+	private function get_template_content_callback($matches){
 		return isset($this->_data[$matches[1]])?$this->_data[$matches[1]]:null;
+	}
+	
+	public function get_template_dir($tpl_file){
+		foreach($this->template_dirs as $dir){
+			if(file_exists($dir.$tpl_file)){
+				return $dir;
+			}
+		}
+		throw new PujaException('Template <strong>'.$tpl_file.'</strong> doesn\'t exists! in folders [<br /> - '.implode('<br /> - ',$this->template_dirs).'<br />]');
+		
 	}
 	/**
 	 * Get template content
@@ -43,30 +53,31 @@ class PujaCompiler{
 	 * @return string template content
 	 * @todo: add instant variable {{ $skin }}
 	 */
-	function get_template_content($tpl_file){
+	private function get_template_content($tpl_file){
 		$tpl_file = $this->remove_quote($tpl_file);
-		if(!file_exists($this->template_dir.$tpl_file)){
-			throw new PujaException('Template <strong>'.$this->template_dir.$tpl_file.'</strong> doesn\'t exists!');
-		}
+		$tpl_dir = $this->get_template_dir($tpl_file);
 		
 		if($this->cache_level == 1){
-			$mtime = filemtime($this->template_dir.$tpl_file);
+			$mtime = filemtime($tpl_dir.$tpl_file);
 			if($mtime > $this->_mtime) $this->_mtime = $mtime;
 		}
-		$content =  file_get_contents($this->template_dir.$tpl_file);
+		$content =  file_get_contents($tpl_dir.$tpl_file);
 		$content = str_replace(array('\{#','\{$','\{{','\{%'),array('[:lpuja_comment:]','[:lpuja_specialvar:]','[:lpuja_variable:]','[:lpuja_percent:]'),$content);
+		
+		
+		if($this->debug){
+			$template_debug = new PujaDebug;
+			$template_debug->operators = $this->_operators;
+			$template_debug->content = $content;
+			$template_debug->tpl_file = $tpl_dir.$tpl_file;
+			$template_debug->tpl_dirs = $this->template_dirs;
+			$template_debug->valid_syntax();
+		}
+		
 		//remove template comment
 		$content = preg_replace('/\{\#\s?(.*?)\s?\#\}/','',$content);
 		// parse instant variable
 		$content = preg_replace_callback('/\{\$\s*([a-z0-9\_]*?)\s*\$\}/i',array($this,"get_template_content_callback"),$content);
-		
-		if($this->debug){
-			$template_debug = new TemplateDebug;
-			$template_debug->operators = $this->_operators;
-			$template_debug->content = $content;
-			$template_debug->tpl_file = $this->template_dir.$tpl_file;
-			$template_debug->valid_syntax();
-		}
 		return $content;
 	}
 	/**
@@ -74,7 +85,7 @@ class PujaCompiler{
 	 * @param string $content
 	 * @throws Exception
 	 */
-	function get_block_extends($content){
+	private function get_block_extends($content){
 		preg_match('/\{\%\s*extends\s?(.*?)\s?\%\}/is', $content, $matches);
 		if(count($matches) == 0) return $this->remove_remain_block($content);
 		
@@ -99,7 +110,7 @@ class PujaCompiler{
 		return $content;
 	}
 	
-	function remove_remain_block($content){
+	private function remove_remain_block($content){
 		$content = preg_replace('/\{\%\s?block\s?(.*?)\s?\%\}/i','',$content);
 		$content = preg_replace('/\{\%\s?endblock\s?(.*?)\s?\%\}/i','',$content);
 		return $content;
@@ -109,7 +120,7 @@ class PujaCompiler{
 	 * Convert a object to array
 	 * @param object $object
 	 */
-	function object2array(&$object){
+	private function object2array(&$object){
 		foreach($object as $key=>$arr){
 			$is_object = is_object($arr);
 			if($is_object || is_array($arr)){
@@ -124,7 +135,7 @@ class PujaCompiler{
 	 * @param string $var_prefix
 	 * @return string: php variable name
 	 */
-	function compile_variable($var,$var_prefix = '$',$default_value = 'null'){
+	private function compile_variable($var,$var_prefix = '$',$default_value = 'null'){
 		$var = stripcslashes($var);
 		$var = str_replace(array(',','__puja_squote__','__puja_dquote__'),array(',$',"'","'"),trim($var));
 		
@@ -156,7 +167,7 @@ class PujaCompiler{
 	 * if $check_isset is set, it will add isset() into template 
 	 * @throws Exception
 	 */
-	function compile_variable_filter($var){
+	private function compile_variable_filter($var){
 		$var = trim($var);
 		if(!$var) return $var;
 		$prefix = '';
@@ -205,9 +216,9 @@ class PujaCompiler{
 			}
 			
 			if($this->_custom_filter && in_array('filter_'.$filter, $this->_custom_filter['methods'])){
-				$var = '$pujaCustomFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$this->_custom_filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}elseif(in_array('filter_'.$filter,$this->_filter['methods'])){
-				$var = '$pujaFilter->filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$this->_filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}else{
 				throw new PujaException('Filter <strong>'.$filter.'</strong> was not defined');
 			}
@@ -219,7 +230,7 @@ class PujaCompiler{
 	 * Start compile template
 	 * @param string $content
 	 */
-	function compile_start($content){
+	private function compile_start($content){
 		$content = str_replace(array('\\','\''),array('\\\\','\\\''), $content);
 		return $content;
 	}
@@ -228,7 +239,7 @@ class PujaCompiler{
 	 * Compile end 
 	 * @param string $content
 	 */
-	function compile_end($content){
+	private function compile_end($content){
 		$content = str_replace(array('[:lpuja_variable:]','[:lpuja_percent:]','[:lpuja_specialvar:]','[:lpuja_comment:]'),array('{{','{%','{$','{#'),$content);
 		return $content;
 	
@@ -240,7 +251,7 @@ class PujaCompiler{
 	 * @param string $content
 	 */
 	
-	function get_block_include($content){
+	private function get_block_include($content){
 		preg_match_all('/\{\%\s?include\s+(.*?)\s+(.*?)\s?\%\}/i', $content, $include_matches);
 		$include_replace = array();
 		if(count($include_matches[0])){
@@ -271,7 +282,7 @@ class PujaCompiler{
 	 * @param string $content
 	 * @return string template content without comment block
 	 */
-	function remove_template_comment($content){
+	private function remove_template_comment($content){
 		return preg_replace('/\{\#\s?(.*?)\s?\#\}/','',$content);
 	}
 	
@@ -281,7 +292,7 @@ class PujaCompiler{
 	 * @return unknown|string
 	 */
 	
-	function compile_in_array($var){
+	private function compile_in_array($var){
 		if(!strpos($var,'__in_array__')) return $var;
 		$explode = explode('__in_array__',$var);
 		return 'in_array('.$explode[0].','.str_replace(':null',':array()',$explode[1]).')';
@@ -292,7 +303,7 @@ class PujaCompiler{
 	 * @param string $string
 	 * @return string: template name without quote
 	 */
-	function remove_quote($string){
+	private function remove_quote($string){
 		return str_replace(array('\'','"'),array('',''),trim($string));
 	}
 	
@@ -303,7 +314,7 @@ class PujaCompiler{
 	 * @param string $arg_separtor
 	 * @return string
 	 */
-	function build_query($formdata, $numeric_prefix=null,$arg_separtor='&'){
+	private function build_query($formdata, $numeric_prefix=null,$arg_separtor='&'){
 		if(!function_exists('http_build_query')){
 			throw new PujaException('Puja requires http_build_query()');
 		}
@@ -317,7 +328,7 @@ class PujaCompiler{
 	 * @param string $type_include
 	 * @return string
 	 */
-	function compile_include_variable($var_str, $type_include){
+	private function compile_include_variable($var_str, $type_include){
 		$var_str = trim($var_str);
 		//if(!$var_str) return null;
 		
@@ -350,7 +361,7 @@ class PujaCompiler{
 	 * @param boolean $return_value
 	 * @throws Exception
 	 */
-	function parse($tpl_file, $data,$return_value = false){
+	public function parse($tpl_file, $data,$return_value = false){
 		
 		if(!is_string($tpl_file)){
 			throw new PujaException('Template file must be a string,given '.gettype($tpl_file));
@@ -369,7 +380,7 @@ class PujaCompiler{
 			}	
 		}
 		
-		$this->_cache = new TemplateCache;
+		$this->_cache = new PujaCache;
 		$this->_cache->dircache = $this->cache_dir;
 		$this->_cache->level = $this->cache_level;
 		
@@ -400,8 +411,8 @@ class PujaCompiler{
 			return;
 		}
 		
-		$this->_filter = array('name'=>'TemplateFilter', 'methods'=>get_class_methods('TemplateFilter'));
-		$this->_tags = array('name'=>'TemplateTags', 'methods'=>get_class_methods('TemplateTags'));
+		$this->_filter = array('name'=>'PujaFilter', 'methods'=>get_class_methods('PujaFilter'));
+		$this->_tags = array('name'=>'PujaTags', 'methods'=>get_class_methods('PujaTags'));
 		if($this->custom_filter){
 			$this->_custom_filter = array('name'=> get_class($this->custom_filter), 'methods'=>get_class_methods($this->custom_filter));
 		}
@@ -416,13 +427,13 @@ class PujaCompiler{
 		preg_match_all('/\{\%\s*(get_file'.(isset($this->_custom_tags['methods'])?'|'.implode('|',$this->_custom_tags['methods']):'').')\s+(.*?)\s+(.*?)\s*\%\}/',$content, $include_matches);
 		preg_match_all('/\{\{\s*([^\{\}]*?)\s*\}\}/',$content, $variable_matches);
 		
-		if(count($matches[2]) || count($variable_matches[1]) || count($include_matches[3]) || count($for_matches[1])){
+		if(count($matches[2]) || count($variable_matches[1]) || count($include_matches[2]) || count($for_matches[1])){
 			
 			$seperate_array = array('__array_split__');
 			$empty_array = array('__array_empty__');
 			$structure_arr = array_merge(count($matches[2])?$matches[2]:$empty_array,$seperate_array,
 										count($variable_matches[1])?$variable_matches[1]:$empty_array,$seperate_array,
-										count($include_matches[3])?$include_matches[3]:$empty_array,$seperate_array,
+										count($include_matches[2])?$include_matches[2]:$empty_array,$seperate_array,
 										count($for_matches[1])?$for_matches[1]:$empty_array,$seperate_array,
 										count($for_matches[2])?$for_matches[2]:$empty_array,$seperate_array);
 			
@@ -547,12 +558,12 @@ class PujaCompiler{
 		
 		if(count($include_matches[1])) foreach($include_matches[1] as $key=>$tag){
 			if($tag == 'get_file'){
-				$var = 'file_get_contents(\''.$this->template_dir.$include_matches[2][$key].'\')';
+				$var = 'file_get_contents($this->get_template_dir(\''.$this->template_dir.$include_matches[2][$key].'\').\''.$include_matches[2][$key].'\')';
 				if(trim($include_matches[3][$key]) == 'escape') $var = 'htmlentities('.$var.')';
 			}elseif($this->_custom_tags && in_array($tag, $this->_custom_tags['methods'])){
-				$var = '$pujaCustomTags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
+				$var = '$this->_custom_tags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}elseif($this->_tags && in_array($tag,$this->_tags['methods'])){
-				$var = '$pujaTags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
+				$var = '$this->tags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}else{
 				throw new PujaException('Tag <strong>'.$tag.'</strong> was not defined');
 			}
@@ -563,14 +574,11 @@ class PujaCompiler{
 		$content = $this->compile_end($content);
 		
 		extract($data);
-		$new_class = '$pujaFilter = new '.$this->_filter['name'].';$pujaTags = new '.$this->_tags['name'].';';
-		if($this->_custom_filter['name']) $new_class .= '$pujaCustomFilter = new '.$this->_custom_filter['name'].';';
-		if($this->_custom_tags['name']) $new_class .= '$pujaCustomTags = new '.$this->_custom_tags['name'].';';
 		
-		$cache_file_content = '<?php '.$new_class.'  $ast_puja_template = \''.$content.'\';';
+		$cache_file_content = '<?php $ast_puja_template = \''.$content.'\';';
 		if($this->parse_executer == 'eval'){
 			$parse_error = true;
-			@eval($new_class.'$ast_puja_template = \''.$content.'\';$parse_error=false;');
+			@eval('$ast_puja_template = \''.$content.'\';$parse_error=false;');
 			if($parse_error){
 				highlight_string($cache_file_content);
 			}
@@ -579,7 +587,7 @@ class PujaCompiler{
 			}
 		}else{
 			$this->_cache->set($cache['file'], $cache_file_content);
-			require  $cache['file'];
+			require_once  $cache['file'];
 		}
 		if($return_value) return $ast_puja_template;
 		echo $ast_puja_template;

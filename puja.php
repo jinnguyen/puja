@@ -1,6 +1,6 @@
 <?php
 /**
- * Puja v1.0
+ * Puja v1.1
  * @author jinnguyen
  * @link http://github.com/jinnguyen/puja
  * @license MIT
@@ -19,15 +19,23 @@
 
 class Puja{
 	/**
+	 * @deprecated template_dir is deprecated as of Puja 1.1, and will be removed in the future
 	 *  Folder includes template files 
 	 *  @var string
 	 *  */
-	var $template_dir = 'templates/';
+	public $template_dir = 'templates/';
+	
+	/**
+	 * a list template dirs
+	 * @var string
+	 */
+	public $template_dirs = array();
+	
 	/**
 	 * Folder includes compiled files
 	 * @var string
 	 */
-	var $cache_dir;
+	public $cache_dir;
 	/**
 	 * Cache level<p>
 	 * 0: Default level. No cache<p>
@@ -35,55 +43,55 @@ class Puja{
 	 * 2: NOT update each user modify template, only update when user delete cached file manualy. REQUIRE configure $cache_dir.
 	 * @var int
 	 */
-	var $cache_level;
+	public $cache_level;
 	/**
 	 * Type of template compile.
 	 * - eval: call eval to compile AST. 
 	 * - include: Default value. Create a PHP file from AST and then include it. REQUIRE configure $cache_dir.
 	 * @var string
 	 */
-	var $parse_executer = 'include';
+	public $parse_executer = 'include';
 	/**
 	 * Custom filter class
 	 * @var Class object
 	 */
-	var $custom_filter;
+	public $custom_filter;
 	/**
 	 * Custom tags class
 	 * @var Class object
 	 */
-	var $custom_tags;
+	public $custom_tags;
 	/**
 	 * Mode debug
 	 * - if mode debug = true, enable validate template's syntax [DEVELOP]
 	 * - if mode debug = false, disable validate template's syntax, [PRODUCTION]
 	 * @var Boolean
 	 */
-	var $debug = false;
+	public $debug = false;
 	/**
 	 * Set common values for template before template parse.
 	 * @var Array
 	 */
-	var $headers = array();
+	public $headers = array();
 	/**
 	 * Consider data is only array, not include object.
 	 * - if true: Puja don't run object_to_array converter (save time )
 	 * - if false: Puja run object_to_array converter.
 	 * @var Boolean
 	 */
-	var $data_only_array  = false;
+	public $data_only_array  = false;
 	/**
 	 * Consider include multi level.
 	 * true: Default value. Allow include multi level.
 	 * false: only include 1 level. This option will make faster.
 	 * */
-	var $include_multi_level = true;
+	public $include_multi_level = true;
 	/**
 	 * Consider include multi extends.
 	 * true: Default value. Allow extends multi level..
 	 * false: only include 1 level. This option will make faster.
 	 * */
-	var $extends_multi_level = true;
+	public $extends_multi_level = true;
 	
 	
 	function __construct(){
@@ -104,7 +112,12 @@ class Puja{
 		require_once $include_dir.'src/compiler.php';
 		
 		$tpl = new PujaCompiler;
-		$tpl->template_dir = $this->template_dir;
+		array_unshift($this->template_dirs,$this->template_dir);
+		if(property_exists($this,'template_dir')){
+			trigger_error('Puja::template_dir is deprecated as of Puja 1.1, and will be removed in the future',E_USER_DEPRECATED);
+		}
+		
+		$tpl->template_dirs = $this->template_dirs;
 		$tpl->cache_dir = $this->cache_dir;
 		$tpl->cache_level = $this->cache_level;
 		$tpl->parse_executer = $this->parse_executer;
