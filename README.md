@@ -1,4 +1,4 @@
-Puja v1.0
+Puja v1.1
 ====
 
 Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!
