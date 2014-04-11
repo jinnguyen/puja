@@ -56,7 +56,7 @@ class PujaFilter{
 	}
 	public function filter_keys($val,$arg = null){
 		if(is_array($val)) return array_keys($val);
-		return null;
+		return array();
 	}
 	public function filter_length($val){
 		if(is_array($val)) return count($val);

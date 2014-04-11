@@ -12,6 +12,7 @@ class PujaDebug{
 	public $tpl_dirs = array();
 	public $operators;
 	public $nodelist = array();
+	public $custom_tags;
 	
 	public $debug_html;
 	
@@ -191,6 +192,9 @@ class PujaDebug{
 			$expect_ends_flip = array_flip($expect_ends);
 			$builtin_tags = array('extends','include','set','get_file','block','endblock','if','elseif','else','endif','for','empty','endfor','print');
 			
+			if($this->custom_tags){
+				$builtin_tags = array_merge($builtin_tags,get_class_methods($this->custom_tags));
+			}
 			foreach($matches[1] as $key=>$tag){
 				
 				$arg = trim($matches[2][$key]);

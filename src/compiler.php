@@ -8,6 +8,8 @@ class PujaCompiler{
 	public $parse_executer = 'include';
 	public $custom_filter;
 	public $custom_tags;
+	public $filter;
+	public $tag;
 	public $debug = false;
 	public $headers = array();
 	public $data_only_array  = false;
@@ -28,6 +30,8 @@ class PujaCompiler{
 	public   function __construct(){
 		if(ini_get('magic_quotes_gpc')) ini_set('magic_quotes_gpc',false);
 		if(ini_get('magic_quotes_runtime')) ini_set('magic_quotes_runtime',false);
+		$this->tag = new PujaTags();
+		$this->filter = new PujaFilter();
 	}
 	/**
 	 * Get template callback
@@ -71,6 +75,7 @@ class PujaCompiler{
 			$template_debug->content = $content;
 			$template_debug->tpl_file = $tpl_dir.$tpl_file;
 			$template_debug->tpl_dirs = $this->template_dirs;
+			$template_debug->custom_tags = $this->custom_tags;
 			$template_debug->valid_syntax();
 		}
 		
@@ -198,7 +203,7 @@ class PujaCompiler{
 		if(substr($var,0,16) == '__end_in_array__'){
 			$prefix = '';
 			$var = substr($var,16);
-			$subfix = ')';
+			$subfix = ',true)';
 			$default_value = 'array()';
 		}
 		
@@ -208,7 +213,7 @@ class PujaCompiler{
 		$var = $arr_keys[0];
 		unset($var_info[$var]);
 		
-		$var = $prefix.$this->compile_variable(stripslashes($var),'$',$default_value).$subfix;
+		$var = $this->compile_variable(stripslashes($var),'$',$default_value);
 		
 		if(count($var_info)) foreach($var_info as $filter=>$arg){
 			if(substr($arg,0,22) == '__template_engine_arg_' && substr($arg,-1) == '_'){
@@ -216,14 +221,14 @@ class PujaCompiler{
 			}
 			
 			if($this->_custom_filter && in_array('filter_'.$filter, $this->_custom_filter['methods'])){
-				$var = '$this->_custom_filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$this->custom_filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}elseif(in_array('filter_'.$filter,$this->_filter['methods'])){
-				$var = '$this->_filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
+				$var = '$this->filter->filter_'.$filter.'('.$var.',"'.$arg.'")';
 			}else{
 				throw new PujaException('Filter <strong>'.$filter.'</strong> was not defined');
 			}
 		}
-		return $var;
+		return $prefix.$var.$subfix;;
 	}
 	
 	/**
@@ -390,10 +395,10 @@ class PujaCompiler{
 		$this->_data = $data;
 		if($this->data_only_array === false) $this->object2array($data);
 		if($this->cache_level == 2){
-			$cache = $this->_cache->get($tpl_file,0);//$this->_mtime = 0
-			if($cache['valid']){
+			$puja_cache = $this->_cache->get($tpl_file,0);//$this->_mtime = 0
+			if($puja_cache['valid']){
 				extract($data);
-				include $cache['file'];
+				include $puja_cache['file'];
 				echo $ast_puja_template;
 				return;
 			}
@@ -403,10 +408,10 @@ class PujaCompiler{
 		$content = $this->get_block_extends($content);
 		$content = $this->get_block_include($content);
 
-		$cache = $this->_cache->get($tpl_file,$this->_mtime);
-		if($cache['valid']){
+		$puja_cache = $this->_cache->get($tpl_file,$this->_mtime);
+		if($puja_cache['valid']){
 			extract($data);
-			include $cache['file'];
+			include $puja_cache['file'];
 			echo $ast_puja_template;
 			return;
 		}
@@ -561,7 +566,7 @@ class PujaCompiler{
 				$var = 'file_get_contents($this->get_template_dir(\''.$this->template_dir.$include_matches[2][$key].'\').\''.$include_matches[2][$key].'\')';
 				if(trim($include_matches[3][$key]) == 'escape') $var = 'htmlentities('.$var.')';
 			}elseif($this->_custom_tags && in_array($tag, $this->_custom_tags['methods'])){
-				$var = '$this->_custom_tags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
+				$var = '$this->custom_tags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}elseif($this->_tags && in_array($tag,$this->_tags['methods'])){
 				$var = '$this->tags->'.$tag.'("'.$include_matches[2][$key].'","'.$include_matches[3][$key].'")';
 			}else{
@@ -572,24 +577,26 @@ class PujaCompiler{
 		
 		$content = str_replace($include_matches[0],$include_matches[1],$content);
 		$content = $this->compile_end($content);
+		// These values must before extract($data) to make sure data is not overwritten
+		$puja_cache_file_content = '<?php $ast_puja_template = \''.$content.'\';';
+		$puja_content = '$ast_puja_template = \''.$content.'\';$parse_error=false;';
+		$puja_return_value = $return_value;
 		
 		extract($data);
-		
-		$cache_file_content = '<?php $ast_puja_template = \''.$content.'\';';
 		if($this->parse_executer == 'eval'){
 			$parse_error = true;
-			@eval('$ast_puja_template = \''.$content.'\';$parse_error=false;');
+			@eval($puja_content);
 			if($parse_error){
-				highlight_string($cache_file_content);
+				highlight_string($puja_cache_file_content);
 			}
 			if($this->cache_level){ // > 0
-				$this->_cache->set($cache['file'], $cache_file_content);
+				$this->_cache->set($puja_cache['file'], $puja_cache_file_content);
 			}
 		}else{
-			$this->_cache->set($cache['file'], $cache_file_content);
-			require_once  $cache['file'];
+			$this->_cache->set($puja_cache['file'], $puja_cache_file_content);
+			require_once  $puja_cache['file'];
 		}
-		if($return_value) return $ast_puja_template;
+		if($puja_return_value) return $ast_puja_template;
 		echo $ast_puja_template;
 	}
 }
