@@ -643,5 +643,3 @@ class PujaCompiler
         echo $ast_puja_template;
     }
 }
-
-?>

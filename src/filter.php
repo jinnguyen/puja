@@ -173,5 +173,3 @@ class PujaFilter
         return $arr[1];
     }
 }
-
-?>
