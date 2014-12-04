@@ -1,10 +1,12 @@
 <?php
-class PujaTags{
-	
-	public function __construct(){
-		
-	}
-	
-	
+
+class PujaTags
+{
+
+    public function __construct()
+    {
+
+    }
 }
+
 ?>

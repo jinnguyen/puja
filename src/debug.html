@@ -1,41 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Template syntax error</title>
-<style>
-	body{
-		margin:0px;
-		background:lemonchiffon;
-	}
-	.current_bug{
-		color:red;
-	}
-	.header{
-		background:darkred;
-		padding:10px;
-	}
-	.content{
-		padding-left:10px;
-	}
-	ol{
-		border: 1px solid #ccc;
-		padding-top:10px;
-		padding-bottom:10px;
-		background:#fff;
-	}
-	ol li{
-		padding:2px 0px 2px 40px;
-		border-bottom:1px solid #eee;
-	}
-	ol li.line_{{line}}{
-		background:#eee;
-	}
-	
-</style>
+    <title>Template syntax error</title>
+    <style>
+        body {
+            margin: 0px;
+            background: lemonchiffon;
+        }
+
+        .current_bug {
+            color: red;
+        }
+
+        .header {
+            background: darkred;
+            padding: 10px;
+        }
+
+        .content {
+            padding-left: 10px;
+        }
+
+        ol {
+            border: 1px solid #ccc;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background: #fff;
+        }
+
+        ol li {
+            padding: 2px 0px 2px 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        ol li.line_{{line}} {
+            background:#eee;
+        }
+    </style>
 </head>
 <body>
 <div class="header">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAAAZCAYAAACis3k0AAAAGXRFWHRTb2Z0d2Fy
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAAAZCAYAAACis3k0AAAAGXRFWHRTb2Z0d2Fy
 ZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAA
 AAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5U
 Y3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6
@@ -78,11 +84,13 @@ HJoMiq0/QDOjJtmu5FMvBF7BWKdYIi1Bt7nd80c6dY8lQSCLXzJvXJ+SsjKQv5bi
 i/wfAGIvfr5mOELtrxaSpOGE20ZGu3yFn1Ti8RJLM8C+yTSPBMBFPF4vvAf23DiC
 jgTZT5baWAGAzUKdfriJkI/s4WTXvGo1YB6YszeHVIvnN5Oxzr+iHHMPQQB7mo0j
 WHQrQDSVzim2aYHMqVaat2DpSwYtOOzGN9C++tsReq99942ZeWX7T4ABAFyslfiB
-TqE0AAAAAElFTkSuQmCC" alt="Puja" /></div>
+TqE0AAAAAElFTkSuQmCC" alt="Puja"/></div>
 <div class="content">
-<h3>Error during template rendering</h3>
-<div>TemplateError: {{error_message}} in <strong>{{tpl_file}}</strong>, error at line <strong>{{line}}</strong><br /></div>
-<ol>{{error_body}}</ol>
+    <h3>Error during template rendering</h3>
+
+    <div>TemplateError: {{error_message}} in <strong>{{tpl_file}}</strong>, error at line <strong>{{line}}</strong><br/>
+    </div>
+    <ol>{{error_body}}</ol>
 </div>
 </body>
 </html>
