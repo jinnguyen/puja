@@ -31,10 +31,12 @@ class PujaCompiler
     private $_mtime = 0;
     private $_data = array();
 
-    public function __construct()
+    public function __construct($checkMagicFunc = false)
     {
-        if (ini_get('magic_quotes_gpc')) ini_set('magic_quotes_gpc', false);
-        if (ini_get('magic_quotes_runtime')) ini_set('magic_quotes_runtime', false);
+    	if ($checkMagicFunc) {
+    		if (ini_get('magic_quotes_gpc')) ini_set('magic_quotes_gpc', false);
+    		if (ini_get('magic_quotes_runtime')) ini_set('magic_quotes_runtime', false);
+    	}
         $this->tag = new PujaTags();
         $this->filter = new PujaFilter();
     }
