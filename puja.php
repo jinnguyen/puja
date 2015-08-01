@@ -24,7 +24,7 @@ class Puja
      *  Folder includes template files
      * @var string
      *  */
-    public $template_dir = 'templates/';
+    public $template_dir = null;
     
     /**
      * Check to set disable magic function
@@ -122,9 +122,10 @@ class Puja
         require_once $include_dir . 'src/compiler.php';
 
         $tpl = new PujaCompiler($this->checkMagicFunc);
-        array_unshift($this->template_dirs, $this->template_dir);
-        if (property_exists($this, 'template_dir')) {
+        
+        if ($this->template_dir !== null) {
             trigger_error('Puja::template_dir is deprecated as of Puja 1.1, and will be removed in the future', E_USER_DEPRECATED);
+            array_unshift($this->template_dirs, $this->template_dir);
         }
 
         $tpl->template_dirs = $this->template_dirs;

@@ -110,8 +110,8 @@ class PujaDebug
         switch ($tag) {
             case 'for':
                 if (!$arg) $this->trace_bug($full_tag, 'suggest_' . $tag);
-                if (!preg_match('/\s+([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/', ' ' . $arg . ' ')
-                    && !preg_match('/\s+([a-z0-9\_]+?)\s*,\s*([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/', ' ' . $arg . ' ')
+                if (!preg_match('/\s+([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/i', ' ' . $arg . ' ')
+                    && !preg_match('/\s+([a-z0-9\_]+?)\s*,\s*([a-z0-9\_]+?)\s+in\s+([a-z0-9\_\.]+?)\s+/i', ' ' . $arg . ' ')
                 ) $this->trace_bug($full_tag, 'suggest_' . $tag);
                 break;
             case 'empty':
@@ -161,7 +161,7 @@ class PujaDebug
     {
         $start = microtime();
 
-        preg_match_all('/\{\#\s*(.*?)\s*\#\}/', $this->content, $matches);
+        preg_match_all('/\{\#\s*(.*?)\s*\#\}/i', $this->content, $matches);
 
         if (count($matches[0])) {
             foreach ($matches[0] as $key => $val) $matches[1][$key] = $this->serialize_mark($val);
@@ -170,7 +170,7 @@ class PujaDebug
 
 
         //Validate end tag
-        preg_match_all('/\{\{\s([a-z0-9\|\.]*?)\s(.*?)(\{\{|\n)/', $this->content, $matches);
+        preg_match_all('/\{\{\s([a-z0-9\|\.]*?)\s(.*?)(\{\{|\n)/i', $this->content, $matches);
         if ($matches[0]) {
             $index_all = 0;
             foreach ($matches[0] as $index => $tag) {
@@ -186,7 +186,7 @@ class PujaDebug
 
 
         //validate variable
-        preg_match_all('/\{\{\s*(.*?)\s*\}\}/', $this->content, $matches);
+        preg_match_all('/\{\{\s*(.*?)\s*\}\}/i', $this->content, $matches);
         if ($matches[0]) {
             $index_all = 0;
             foreach ($matches[0] as $index => $tag) {
@@ -241,7 +241,7 @@ class PujaDebug
                 }
 
                 $this->valid_syntax_detail($tag, $matches[0][$key], $arg);
-                $this->content = preg_replace('#' . preg_quote(str_replace('/', '\/', $full_match)) . '#', $this->serialize_mark($full_match), $this->content, 1);
+                $this->content = preg_replace('#' . preg_quote(str_replace('/', '\/', $full_match)) . '#i', $this->serialize_mark($full_match), $this->content, 1);
             }
 
             while (count($levels)) {
