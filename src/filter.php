@@ -45,7 +45,9 @@ class PujaFilter
 
     public function filter_default($val, $arg = null)
     {
-        if (!$val) return $arg;
+        if ($val === null) {
+        	return $arg;
+        }
         return $val;
     }
 
