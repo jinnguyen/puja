@@ -1,3 +1,9 @@
+- 2016-10-23
+    - Refactor code
+    - Fix issue debug syntax {{ var }
+    - Add Autoload.php
+    - Add composer.json
+    - Update example files
 - 2013-11-17:
 	- Fix variable a == 0
 	- Update performance for cache level = 2( Dont load template content if cache_level  = 2)

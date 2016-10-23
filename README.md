@@ -3,6 +3,18 @@ Puja v1.1
 
 Puja is a lightweight, flexible and easy PHP  template engine. Inspired in django, Puja also support validate template syntax!
 
+<strong>Install:</strong><br />
+* <strong>Composer</strong>
+<pre>
+composer require jinnguyen/puja
+require 'vendor/autoload.php';
+$puja = new Puja();
+</pre>
+* <strong>Old style</strong>
+<pre>require '/path/to/Autoload.php';
+$puja = new Puja();
+</pre>
+
 <strong>Some of Puja's features</strong>:
 * <strong>VALIDATE TEMPLATE SYNTAX</strong>
 * it is extremely fast
@@ -46,7 +58,7 @@ Welcome you go to the very first exmplate of Puja template.</pre>
 - php file: index.php
 <pre>
   &lt;?php
-  require_once '/path/to/puja.php';
+  require_once '/path/to/Autoload.php';
   $tpl = new Puja;
   $tpl->tpl_dir = '/path/to/template/folder/';
   $data = array(

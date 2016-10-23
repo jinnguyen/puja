@@ -91,17 +91,15 @@ TqE0AAAAAElFTkSuQmCC" alt="Puja" /></div>
 		</td>
 		<td valign="top">
 		{% block master %}
-		Master template: <a href="templates/master.tpl">master.tpl</a>
+		<strong>Master template:</strong> <a href="templates/master.tpl">master.tpl</a>
 		<br /><br />
-		Template {$ tpl_file $}:
-		<pre>
-{% get_file {$ tpl_file $}   escape   %}
-		</pre>
-		PHP File
+		<strong>Template file:</strong> <em>{$ tpl_file $}</em>:
+		<pre>{% get_file {$ tpl_file $} escape %}</pre><br /><br />
+			<strong>PHP File</strong>
 		<pre>
 			{{ php_file }}
 		</pre>
-		Result:
+		<strong>Result</strong>:
 		<pre>
 		{% block body %}{% endblock %}</pre>
 		{% endblock %}

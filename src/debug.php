@@ -128,6 +128,7 @@ class PujaDebug
             case 'get_file':
                 if ($tag == 'get_file' && substr($arg, -6) == 'escape') $arg = trim(substr($arg, 0, -6));
                 if (!$arg) $this->trace_bug($full_tag, 'suggest_with_arg', $tag);
+                
                 if (strpos($arg, ' ')) {
                     if ($tag == 'get_file') $this->trace_bug($full_tag, 'not_support_multi_file', $tag);
                     else {
@@ -160,14 +161,12 @@ class PujaDebug
     public function valid_syntax()
     {
         $start = microtime();
-
         preg_match_all('/\{\#\s*(.*?)\s*\#\}/i', $this->content, $matches);
 
         if (count($matches[0])) {
             foreach ($matches[0] as $key => $val) $matches[1][$key] = $this->serialize_mark($val);
             $this->content = str_replace($matches[0], $matches[1], $this->content);
         }
-
 
         //Validate end tag
         preg_match_all('/\{\{\s([a-z0-9\|\.]*?)\s(.*?)(\{\{|\n)/i', $this->content, $matches);
@@ -179,7 +178,7 @@ class PujaDebug
                 $index_all++;
                 $tag = str_replace("\n", "", $tag);
                 if (!strpos($tag, '}}')) {
-                    $this->trace_bug('variable_end_tag', $index, 'missing_end_variable');
+                    $this->trace_bug($tag, 'wrong_syntax', 'missing_end_variable');
                 }
             }
         }
@@ -195,7 +194,6 @@ class PujaDebug
                 $index_all++;
             }
         }
-
 
         // validate control structors
         preg_match_all('/\{\%\s*([a-z0-9\_]*?)\s(.*?)\%\}/i', $this->content, $matches);

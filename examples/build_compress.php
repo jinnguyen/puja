@@ -42,18 +42,17 @@ if($_POST){
 	$structures = array('src');
 	$folder = $target_folder.DIRECTORY_SEPARATOR.$_POST['folder'].DIRECTORY_SEPARATOR;
 	mkdir($target_folder.DIRECTORY_SEPARATOR.$_POST['folder'].DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR,777,true);
-	//create_file($folder.'puja.php');
 	
 	$list_file = array();
 	file_struct(dirname($target_folder).DIRECTORY_SEPARATOR.'src',$list_file);
-	$list_file[] = dirname($target_folder).DIRECTORY_SEPARATOR.'puja.php';
+	$list_file[] = dirname($target_folder).DIRECTORY_SEPARATOR.'src/Autoload.php';
 	echo json_encode(array('status'=>true,'msg'=>'OK','list_file'=>$list_file,'folder'=>$_POST['folder']));
 	//echo $folder;
 	exit();
 }
-include '../puja.php';
+require '../src/Autoload.php';
 $tpl = new Puja;
-$tpl->template_dir = 'templates/';
+$tpl->template_dirs = array('templates/');
 $tpl->cache_dir = 'cache/';
 $tpl->parse_executer = 'eval';
 $tpl->headers = array(

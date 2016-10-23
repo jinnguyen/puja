@@ -1,9 +1,9 @@
 <?php 
 ini_set('display_errors','On');
 date_default_timezone_set('Asia/Bangkok');
-include '../puja.php';
+require '../src/Autoload.php';
 $tpl = new Puja;
-$tpl->template_dir = 'templates/';
+$tpl->template_dirs = array('templates/');
 $tpl->cache_dir = 'cache/';
 $tpl->parse_executer = 'eval';
 $tpl->headers = array(
@@ -12,7 +12,7 @@ $tpl->headers = array(
 );
 $data = array(
 	'name'=>'Puja',
-	'date_join'=>date('Y-m-d H:i:s'),
+	'date_join'=>'2016-10-23 14:08:51',
 );
 $tpl->parse('filter.tpl',$data);
 ?>

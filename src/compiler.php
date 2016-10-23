@@ -1,12 +1,8 @@
 <?php
 
-class PujaException extends Exception
-{
-}
-
 class PujaCompiler
 {
-    public $template_dirs = 'templates/';
+    public $template_dirs;
     public $cache_dir;
     public $cache_level;
     public $parse_executer = 'include';
@@ -79,8 +75,8 @@ class PujaCompiler
         }
         $content = file_get_contents($tpl_dir . $tpl_file);
         $content = str_replace(array('\{#', '\{$', '\{{', '\{%'), array('[:lpuja_comment:]', '[:lpuja_specialvar:]', '[:lpuja_variable:]', '[:lpuja_percent:]'), $content);
-
-
+        // parse instant variable
+        $content = preg_replace_callback('/\{\$\s*([a-z0-9\_]*?)\s*\$\}/i', array($this, "get_template_content_callback"), $content);
         if ($this->debug) {
             $template_debug = new PujaDebug;
             $template_debug->operators = $this->_operators;
@@ -93,11 +89,9 @@ class PujaCompiler
 
         //remove template comment
         $content = preg_replace('/\{\#\s?(.*?)\s?\#\}/', '', $content);
-        // parse instant variable
-        $content = preg_replace_callback('/\{\$\s*([a-z0-9\_]*?)\s*\$\}/i', array($this, "get_template_content_callback"), $content);
         return $content;
     }
-
+    
     /**
      * Parse extends block
      * @param string $content
@@ -108,11 +102,11 @@ class PujaCompiler
         preg_match('/\{\%\s*extends\s?(.*?)\s?\%\}/is', $content, $matches);
         if (count($matches) == 0) return $this->remove_remain_block($content);
 
-        $extends_content = $this->get_template_content($matches[1]);
         preg_match_all('/\{\%\s*block\s?([a-z0-9\_]*?)\s?\%\}(.*?)\{\%\s?endblock\s?\1?\s?\%\}/is', $content, $content_blocks);
-        $content = $extends_content;
+        $content = $this->get_template_content($matches[1]);
+
         if (count($content_blocks[1])) {
-            preg_match_all('/\{\%\s*block\s?(' . implode('|', $content_blocks[1]) . ')\s?\%\}(.*?)\{\%\s?endblock\s?\1?\s?\%\}/is', $extends_content, $extends_content_blocks);
+            preg_match_all('/\{\%\s*block\s?(' . implode('|', $content_blocks[1]) . ')\s?\%\}(.*?)\{\%\s?endblock\s?\1?\s?\%\}/is', $content, $extends_content_blocks);
             $block_names = array();
             $block_names = array_flip($content_blocks[1]);
             if (count($extends_content_blocks[1])) foreach ($extends_content_blocks[1] as $key => $block_name) {
@@ -422,6 +416,7 @@ class PujaCompiler
             $data = array_merge($this->headers, $data);
         }
         $this->_data = $data;
+        $ast_puja_template = null;
         if ($this->data_only_array === false) $this->object2array($data);
         if ($this->cache_level == 2) {
             $puja_cache = $this->_cache->get($tpl_file, 0);//$this->_mtime = 0
@@ -608,7 +603,7 @@ class PujaCompiler
 
         if (count($include_matches[1])) foreach ($include_matches[1] as $key => $tag) {
             if ($tag == 'get_file') {
-                $var = 'file_get_contents($this->get_template_dir(\'' . $this->template_dir . $include_matches[2][$key] . '\').\'' . $include_matches[2][$key] . '\')';
+                $var = 'file_get_contents($this->get_template_dir(\'' . $include_matches[2][$key] . '\').\'' . $include_matches[2][$key] . '\')';
                 if (trim($include_matches[3][$key]) == 'escape') $var = 'htmlentities(' . $var . ')';
             } elseif ($this->_custom_tags && in_array($tag, $this->_custom_tags['methods'])) {
                 $var = '$this->custom_tags->' . $tag . '("' . $include_matches[2][$key] . '","' . $include_matches[3][$key] . '")';

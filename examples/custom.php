@@ -25,21 +25,22 @@ class CustomTags{
 		return '&lt;script src="'.$val.'?'.$arg.'"&gt;&lt;/script&gt;';
 	}
 }
-include '../puja.php';
+require '../src/Autoload.php';
 $tpl = new Puja;
-$tpl->template_dir = 'templates/';
+
+$tpl->template_dirs = array('templates/');
 $tpl->cache_dir = 'cache/';
-$tpl->cache_level = 1;
+$tpl->parse_executer = 'eval';
+$tpl->debug = true;
 $tpl->custom_filter = new CustomFilter;
 $tpl->custom_tags = new CustomTags;
-//$tpl->parse_executer = 'eval';
 $tpl->headers = array(
 	'tpl_file'=>'custom.tpl',
 	'php_file'=>highlight_file('custom.php',true),
 );
 $data = array(
 	'name'=>'puja is a template engine',
-	'file_name'=>'/path/to/puja.php',
+	'file_name'=>'/path/to/Autoload.php',
 );
 $tpl->parse('custom.tpl',$data);
 ?>

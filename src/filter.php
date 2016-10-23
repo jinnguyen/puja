@@ -2,7 +2,7 @@
 
 class PujaFilter
 {
-    /* Conver a string to upper
+    /* Convert a string to upper
      * */
 
     public function filter_main($val)

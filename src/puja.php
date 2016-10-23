@@ -6,7 +6,7 @@
  * @link http://github.com/jinnguyen/puja
  * @license MIT
  * @example
- * include 'path/to/puja.php';<p>
+ * include 'path/to/Autoload.php';<p>
  * $tpl = new Puja;<p>
  * $tpl->cache_dir = 'path/to/cache/dir';<p>
  * $data = array(<p>
@@ -17,6 +17,7 @@
  * home.tpl file:<p>
  * Welcome {{ username }}<p>
  */
+
 class Puja
 {
     /**
@@ -114,13 +115,7 @@ class Puja
      */
     function parse($template_file, $template_data = array(), $return_value = false)
     {
-        $include_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-        require_once $include_dir . 'src/filter.php';
-        require_once $include_dir . 'src/tags.php';
-        require_once $include_dir . 'src/debug.php';
-        require_once $include_dir . 'src/cache.php';
-        require_once $include_dir . 'src/compiler.php';
-
+        
         $tpl = new PujaCompiler($this->checkMagicFunc);
         
         if ($this->template_dir !== null) {
