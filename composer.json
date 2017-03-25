@@ -5,21 +5,21 @@
   "license": "The MIT License (MIT)",
   "keywords": ["puja", "template engine", "php template engine", "django style", "template engine validate syntax"],
   "authors": [
-      {
-        "name": "Jin Nguyen",
-        "email": "w2ajax@gmail.com",
-        "url": "http://github.com/jinnguyen/puja"
-      }
+    {
+      "name": "Jin Nguyen",
+      "email": "w2ajax@gmail.com"
+    }
   ],
   "minimum-stability": "stable",
-  "require": {},
+  "require": {
+    "jinnguyen/puja-middleware": "dev-master"
+  },
   "require-dev": {
-      "codeception/aspect-mock": "0.5.3",
-      "phpunit/phpunit": "^4.8"
+
   },
   "autoload": {
-      "classmap": [
-        "src/"
-      ]
+    "psr-4": {
+      "Puja\\Library\\": "application/library"
+    }
   }
 }
